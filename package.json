@@ -1,0 +1,14 @@
+{
+  "name": "zom-www-domain",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-uglify": "^3.0.1"
+  }
+}

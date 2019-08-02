@@ -1,0 +1,48 @@
+TODO:
+
+后端：
+.优化mybatis文件生成工具，并入此项目
+.mybatis 注解
+.spring security
+.boot, cloud, Spring Security, spring session, kafka, rabbitmq, redis, docker, kubernetes
+
+前端：
+.vue + iview + iview admin -> crud
+.gulp -> babel watch, 打版本号，压缩，优化，合并
+.websocket_sockjs_stomp
+
+数据库：
+.常见表设计
+
+
+
+/**
+ * tech:spring boot,spring cloud,mq,docker,vue,sass,gulp,webpack,redis,netty,jetty
+ * deep:java(source code and comprehend),jvm,tomcat,spring,mysql,mybatis,js_plugin_source_learn
+ * practise:linux,data_structure,regex,thread,
+ * know:network,math,python
+ * DevOps:mysql,tomcat,nginx,mq,docker
+ * think:log,security,performance,auto_deploy,design_pattern,distributed,refactor,cache,load_balance,rapid_development,decouple,mq,db_scale,web_static,
+ *       event
+ *
+ * java:nio,collection,reflection,thread,class_loader,security
+ *
+ * source:tomcat,java,spring(self,mvc,boot,cloud),mybatis,apache_commons,maven,druid,fastjson,guava,activemq/rabbitmq/kafka,httpclient,logback,redis/memcached
+ *
+ * javaee api: jmx,rpc,jndi,rmi,servlet_api
+ *
+ *
+ * sequence: nio_socket_thread_class-loader_reflection -> jmx_jndi_rpc_rmi -> servlet_api -> tomcat -> design_pattern
+ *
+ *           spring-mvc -> spring-base -> spring-boot-cloud
+ *
+ *           data-structure -> collection
+ *
+ *
+ * use: boot, cloud, Spring Security, kafka, rabbitmq, redis, vue, iView docker, kubernetes, ServiceMesh
+ *
+ * Gradle, Groovy, Python, JDK8,9,10, Spring 5, spring web flow, spring amqp, spring session
+ *
+ * Jira, Jenkins,Tricentis CI, gitlab, 自动化测试工具Tricentis,Selenium 数据可视化的工具Hygieia
+ *
+ */

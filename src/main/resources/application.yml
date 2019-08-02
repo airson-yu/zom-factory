@@ -1,0 +1,24 @@
+spring:
+    application:
+        name: zom-factory
+    http:
+        encoding:
+            force: true
+            charset: UTF-8
+            enabled: true
+    servlet:
+        multipart:
+            enabled: true
+            max-request-size: null
+    thymeleaf:
+        enabled: false
+    mvc:
+        static-path-pattern: /resources/**
+
+server:
+    port: 8888
+    error:
+        path: /custom/error
+    tomcat:
+        uri-encoding: utf-8
+
