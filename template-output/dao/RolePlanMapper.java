@@ -2,13 +2,16 @@ package com.zom.common.dao.mapper;
 
 import com.zom.common.dao.po.RolePlan;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author yuronghua-airson
  * @description Mybatis Mapper: RolePlan
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 角色方案
- * @time 2019-08-02 16:19:22
+ * @time 2019-08-05 15:46:49
  */
 public interface RolePlanMapper {
 
