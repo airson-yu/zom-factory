@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: RolePlan
+ * @description PO: RolePlanRole
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 角色方案
+ * @remark 角色
  * @time 2019-08-07 15:16:28
  */
 @Data
-public class RolePlan {
+public class RolePlanRole {
 
 	/**
 	 * 
@@ -23,19 +23,24 @@ public class RolePlan {
 	private Long id;
 	
 	/**
-	 * 方案唯一标识ID(数字)
+	 * 角色方案唯一标识ID(数字)
+	 */
+	private Long rolePlanId;
+	
+	/**
+	 * 角色唯一标识ID(数字)
 	 */
 	private Long uniqueId;
 	
 	/**
-	 * 方案名称
+	 * 角色名称
 	 */
-	private String planName;
+	private String roleName;
 	
 	/**
-	 * 方案顺序
+	 * 角色顺序
 	 */
-	private String planOrder;
+	private String roleOrder;
 	
 	/**
 	 * 状态：1启用，0停用，2删除
@@ -47,11 +52,6 @@ public class RolePlan {
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
-	
-	/**
-	 * 类型：1add, 2update, 3delete
-	 */
-	private Integer updateType;
 	
 	/**
 	 * 组织ID
