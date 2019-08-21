@@ -1,0 +1,4 @@
+
+调度台登录名重复，造成调度台账号绑定多个调度台登录时，提示重复错误，更新调度台登录名：
+SELECT id, display_name,logon_name,register_date FROM rtv_user WHERE rank > 0;
+UPDATE rtv_user SET logon_name = CONCAT('c_',id), ts_profile = ts_profile+1 WHERE rank > 0;
