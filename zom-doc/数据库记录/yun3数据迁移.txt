@@ -1,0 +1,270 @@
+-- 这次是迁移运3的数据库到全新数据库，使用zone2，下次是将运二的数据迁移到运3的库，使用zone1
+-- 备份运二数据：mysqldump -uitrunk -p rtvitrunk --ignore-table=rtvitrunk.rtv_gps_info > rtvitrunk_yun2_without_gps_201908121432.sql
+-- 备份运三数据：mysqldump -uitrunk -p rtvitrunk --ignore-table=rtvitrunk.rtv_gps_info > rtvitrunk_yun3_without_gps_201908131415.sql
+
+-- 注意：
+-- 1.运三是初始导入一些不用清空，运二导入时就要清空一些数据，同时检查非zone1的数据也要检查删除
+-- 2.rtv_corp_table 初始导入，保持，TODO 应该把公司名修改为集团,名字待定，需要修改max数量
+-- 
+#mysqldump -t -uitrunk -p rtvitrunk --tables rtv_beacon rtv_beacon_location rtv_bms_params > rtvitrunk_yun2_data.sql
+#新数据库上执行sql脚本：
+#source rtvitrunk_yun2_data.sql
+# 更新新数据库所有TS
+#UPDATE rtv_corp_ts SET `profile`=`profile`+1, `group`=`group`+1, `rule`=`rule`+1, `params`=`params`+1, `admin`=`admin`+1, `unit`=`unit`+1;
+
+--
+-- 有冲突： 角色权限，部门, rtv_login_account, rtv_version_map, rtv_version_user_map, zone_id_assign, rtv_console_user, rtv_iccid_table
+-- 手机号，部门号，用户名，登录名
+-- 
+
+-- confirm: 业务数据表，合并到运3还是全新数据库，版本发布数据的迁移， phone, username等冲突的解决 
+
+
+/* 
+SELECT * FROM information_schema.`TABLES` WHERE TABLE_SCHEMA = 'rtvitrunk_server' AND AUTO_INCREMENT > 1;
+所有有数据的表（过滤了无数据的表）
+
+rtv_3rdkey 数据相同，保持
+rtv_beacon
+rtv_beacon_location
+rtv_bms_params
+rtv_console_user
+rtv_console_user_mapping
+rtv_corp_table 不更新公司数据，保持
+rtv_corp_ts 不更新公司数据，保持
+rtv_corp_zone_map **人为确保公司有两个zone**
+rtv_cu_zone_map
+rtv_dbversion
+rtv_device_type 由于 rtv_version_device_map无数据，此表无需迁移
+rtv_dict 未使用，无需迁移
+rtv_dlmsg_storage 业务数据，直接清空
+rtv_gfile 业务数据，直接清空
+rtv_group
+rtv_iccid_table
+rtv_login_account
+rtv_my_contacts_table
+rtv_nfc_record
+rtv_nfcid_binding
+rtv_operation_log 直接清空
+rtv_plan_action 数据相同，保持
+rtv_plan_event 数据相同，无需迁移
+rtv_plan_event_action 数据相同，无需迁移
+rtv_record_audio 业务数据，直接清空
+rtv_rtpictures 业务数据，直接清空
+rtv_sub_admin zone_id hard code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+rtv_token
+rtv_ulmsg_storage 业务数据，直接清空
+rtv_unit_role_mapping
+rtv_unit_table
+rtv_user
+rtv_user_admin_mapping
+rtv_user_extension
+rtv_user_group_map
+rtv_user_group_map_deleted
+rtv_user_login
+rtv_user_role_mapping
+rtv_version_map 直接清空
+rtv_version_user_map 直接清空
+video_record_table 业务数据，直接清空
+zone_id_assign **人工迁移**
+*/
+
+
+#运二数据库上执行：
+SET @beacon_gap:=5000;
+SET @uid_gap:=65536;
+SET @tg_gap:=65536;
+SET @role_gap:=5000;
+SET @params_gap:=5000;
+SET @console_user_gap:=5000;
+SET @dept_gap:=5000;
+SET @cum_gap:=5000;
+SET @zone1_uid_out_gap:=131073;
+SET @iccid_gap:=5000;
+SET @nfcid_gap:=5000;
+SET @token_gap:=500000;
+SET @user_admin_gap:=20000;
+SET @user_ext_gap:=5000;
+SET @user_group_gap:=100000;
+SET @user_login_gap:=5000;
+SET @user_role_gap:=5000;
+SET @zone_id:=2;
+SET @cu_zone_gap:=5000;
+SET @login_account_gap:=5000;
+-- 复制单块sql到此处包含SET变量模块一起执行，进行单块的测试验证
+
+-- 
+
+-- rtv_3rdkey 数据相同，保持
+
+-- rtv_beacon id, beaconNo, bind_loc_id, 三个字段都加5000，前提：beacon和location都不会超过5000条数据
+UPDATE rtv_beacon SET beaconNo = id;
+UPDATE rtv_beacon SET id = id + @beacon_gap, bind_loc_id = bind_loc_id + @beacon_gap, beaconNo = beaconNo + @beacon_gap;
+
+#rtv_beacon_location id, tg_id, owner_id, role_id, (owner_id都为0)
+UPDATE rtv_beacon_location SET id = id + @beacon_gap, tg_id = tg_id + @tg_gap, 
+owner_id = owner_id + IF(owner_id=0, 0, @uid_gap), role_id = role_id + @role_gap;
+
+#rtv_bms_params id, uid, ts (去除系统级参数和公司级参数) 运三是初始导入不清空
+#DELETE FROM rtv_bms_params WHERE uid < 1000;
+UPDATE rtv_bms_params SET id = id + @params_gap, uid = uid + @uid_gap WHERE uid > 1000;
+UPDATE rtv_bms_params SET ts = ts + 1;
+
+#rtv_console_user id, department_id, department_fk_id, (用户名，手机号有可能重复)
+UPDATE rtv_console_user SET id = id + @console_user_gap, 
+department_id = department_id + @dept_gap, department_fk_id = department_fk_id + @dept_gap;
+
+#rtv_console_user_mapping id, console_id, console_user_id, (去除非zone1的数据)
+DELETE FROM rtv_console_user_mapping WHERE console_id > @zone1_uid_out_gap;
+UPDATE rtv_console_user_mapping SET id = id + @cum_gap, 
+console_id = console_id + @uid_gap, console_user_id = console_user_id + @console_user_gap;
+
+#rtv_corp_table 初始导入，保持，TODO 应该把公司名修改为集团,名字待定，需要修改max数量，系统只用一套，运二不再导入
+
+#rtv_corp_ts，系统只用一套，运二不再导入
+UPDATE rtv_corp_ts SET `profile`=`profile`+1, `group`=`group`+1, `rule`=`rule`+1, `params`=`params`+1, `admin`=`admin`+1, `unit`=`unit`+1;
+
+#rtv_corp_zone_map 公司1配置zone2，需要确认不要重复，系统只用一套，运二不再导入
+#SELECT @corp_zone2:=id FROM rtv_corp_zone_map WHERE corp_id = 1 AND zone_id = 2;
+INSERT INTO rtv_corp_zone_map(corp_id, zone_id) VALUES(1, 2);
+
+#rtv_cu_zone_map id, cu_id, zone_id
+UPDATE rtv_cu_zone_map SET id = id + @cu_zone_gap, 
+cu_id = cu_id + @console_user_gap, zone_id = @zone_id;
+
+#rtv_dbversion 保持，系统只用一套，运二不再导入
+
+#rtv_device_type 保持，系统只用一套，运二不再导入
+
+#rtv_dict 保持，系统只用一套，运二不再导入
+
+#rtv_dlmsg_storage 清空业务数据
+TRUNCATE rtv_dlmsg_storage;
+
+#rtv_gfile 清空业务数据
+TRUNCATE rtv_gfile;
+
+#rtv_group id, owner_id, zone_id, parent_id, group_ts (owner_id需要判断非0才加, parent_id非0才加，1为单位怎么处理？？)
+DELETE FROM rtv_group WHERE id > @zone1_uid_out_gap;
+UPDATE rtv_group SET id = id + @tg_gap, 
+owner_id = owner_id + IF(owner_id=0, 0, @uid_gap), zone_id = @zone_id, parent_id = parent_id + @dept_gap, group_ts = group_ts + 1;
+
+#rtv_iccid_table id, zone_id, uid
+DELETE FROM rtv_iccid_table WHERE zone_id != 1;
+UPDATE rtv_iccid_table SET id = id + @iccid_gap, zone_id = @zone_id, uid = uid + IF(uid=0, 0, @uid_gap);
+
+#rtv_login_account
+UPDATE rtv_login_account SET id = id + @login_account_gap;
+
+#rtv_my_contacts_table 清空
+TRUNCATE rtv_my_contacts_table;
+
+#rtv_nfc id
+UPDATE rtv_nfc SET id = id + @nfcid_gap;
+
+#rtv_nfc_record id, nfc_id_fk, uid
+UPDATE rtv_nfc_record SET id = id + @nfcid_gap, nfc_id_fk = nfc_id_fk + @nfcid_gap, uid = uid + IF(uid=0, 0, @uid_gap);
+
+#rtv_nfcid_binding id, uid
+UPDATE rtv_nfcid_binding SET id = id + @nfcid_gap, uid = uid + IF(uid=0, 0, @uid_gap);
+
+#rtv_operation_log 清空
+TRUNCATE rtv_operation_log;
+
+#rtv_plan_action 保持，系统只用一套，运二不再导入
+
+#rtv_plan_event 保持，系统只用一套，运二不再导入
+
+#rtv_plan_event_action 保持，系统只用一套，运二不再导入
+
+#rtv_record_audio 清空业务数据
+TRUNCATE rtv_record_audio;
+
+#rtv_rtpictures 清空业务数据
+TRUNCATE rtv_rtpictures;
+
+#rtv_sub_admin id, zone_ids, parent_id # zone_id hard code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+UPDATE rtv_sub_admin SET id = id + @dept_gap, zone_ids = REPLACE(zone_ids,"1","2"), 
+parent_id = parent_id + @subadmin_gap;
+
+#rtv_token id, uid
+UPDATE rtv_token SET id = id + @token_gap, uid = uid + @uid_gap;
+
+#rtv_ulmsg_storage 清空业务数据
+TRUNCATE rtv_ulmsg_storage;
+
+#rtv_unit_role_mapping id, role_id, dept_id
+UPDATE rtv_unit_role_mapping SET id = id + @dept_gap, role_id = role_id + @dept_gap, dept_id = dept_id + @dept_gap;
+
+#rtv_unit_table id, parent_id, unique_id, def_gid, unit_id
+UPDATE rtv_unit_table SET id = id + @dept_gap, parent_id = parent_id + @dept_gap, 
+unique_id = unique_id + @dept_gap, def_gid = def_gid + @tg_gap, unit_id = unit_id + @dept_gap;
+
+#rtv_user id, zone_id, unit_id, department_id, unit_fk_id, department_fk_id, dcg_id, logon_name, lmr_uid, ts_group, ts_profile (用户名，手机号有可能重复)
+DELETE FROM rtv_user WHERE id > @zone1_uid_out_gap;
+UPDATE rtv_user SET id = id + @uid_gap, zone_id = @zone_id, 
+unit_id = unit_id + @dept_gap, department_id = department_id + @dept_gap,
+unit_fk_id = unit_fk_id + @dept_gap, department_fk_id = department_fk_id + @dept_gap, 
+dcg_id = dcg_id + @uid_gap, lmr_uid = lmr_uid + @uid_gap,
+ts_group = ts_group + 1, ts_profile = ts_profile + 1;
+UPDATE rtv_user SET logon_name = CONCAT('u1', id);
+
+#rtv_user_admin_mapping id, user_id, admin_id
+DELETE FROM rtv_user_admin_mapping WHERE user_id > @zone1_uid_out_gap OR admin_id > @zone1_uid_out_gap;
+UPDATE rtv_user_admin_mapping SET id = id + @user_admin_gap, 
+user_id = user_id + @uid_gap, admin_id = admin_id + @uid_gap;
+
+#rtv_user_extension id, uid, ext_did, unit_id, department_id, unit_fk_id, dept_fk_id
+DELETE FROM rtv_user_extension WHERE uid > @zone1_uid_out_gap;
+UPDATE rtv_user_extension SET id = id + @user_ext_gap, uid = uid + @uid_gap,
+unit_id = unit_id + @dept_gap, department_id = department_id +  @dept_gap,
+unit_fk_id = unit_fk_id + @dept_gap, dept_fk_id = dept_fk_id + @dept_gap;
+UPDATE rtv_user_extension SET ext_did = CONCAT('itrunk_', uid);
+
+#rtv_user_group_map id, group_id, user_id
+DELETE FROM rtv_user_group_map WHERE group_id > @zone1_uid_out_gap OR user_id > @zone1_uid_out_gap;
+UPDATE rtv_user_group_map SET id = id + @user_group_gap, 
+user_id = user_id + @uid_gap, group_id = group_id + @tg_gap;
+
+#rtv_user_group_map_deleted id, group_id, user_id
+DELETE FROM rtv_user_group_map_deleted WHERE group_id > @zone1_uid_out_gap OR user_id > @zone1_uid_out_gap;
+UPDATE rtv_user_group_map_deleted SET id = id + @user_group_gap, 
+user_id = user_id + @uid_gap, group_id = group_id + @tg_gap;
+
+#rtv_user_login id, uid
+DELETE FROM rtv_user_login WHERE uid > @zone1_uid_out_gap;
+UPDATE rtv_user_login SET id = id + @user_login_gap, uid = uid + @uid_gap;
+
+#rtv_user_role_mapping id, role_id, user_id
+DELETE FROM rtv_user_role_mapping WHERE user_id > @zone1_uid_out_gap;
+UPDATE rtv_user_role_mapping SET id = id + @user_role_gap, role_id = role_id + @role_gap, user_id = user_id + @uid_gap;
+
+#rtv_version_map 清空
+TRUNCATE rtv_version_map;
+
+#rtv_version_user_map 清空
+TRUNCATE rtv_version_user_map;
+
+#video_record_table 清空业务数据
+TRUNCATE video_record_table;
+
+#zone_id_assign **人工确认**
+REPLACE INTO zone_id_assign VALUES(1, 1, 'zone 1', 73727, 131071, 65537, 73728);
+REPLACE INTO zone_id_assign VALUES(2, 2, 'zone 2', 139263, 196607, 131073, 139264);
+UPDATE zone_id_assign SET cur_uid = (SELECT id FROM rtv_user ORDER BY id DESC LIMIT 1) WHERE id = 2;
+UPDATE zone_id_assign SET cur_tgid = (SELECT id FROM rtv_group ORDER BY id DESC LIMIT 1) WHERE id = 2;
+
+DROP TABLE IF EXISTS `rtv_gps_info`;
+CREATE TABLE `rtv_gps_info`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NULL DEFAULT NULL,
+  `date_key` int(11) NULL DEFAULT NULL,
+  `gps_points` mediumblob NULL,
+  `orgid` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `uid`(`uid`) USING BTREE,
+  INDEX `date_key`(`date_key`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+#---------------导入成功---------------
+
