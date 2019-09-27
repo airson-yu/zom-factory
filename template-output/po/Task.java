@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: RolePlanRole
+ * @description PO: Task
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 角色
- * @time 2019-08-07 15:16:28
+ * @remark 任务表
+ * @time 2019-09-26 16:30:43
  */
 @Data
-public class RolePlanRole {
+public class Task {
 
 	/**
 	 * 
@@ -23,40 +23,46 @@ public class RolePlanRole {
 	private Long id;
 	
 	/**
-	 * 角色方案唯一标识ID(数字)
+	 * 
 	 */
-	private Long rolePlanId;
+	private String uniqueId;
 	
 	/**
-	 * 角色唯一标识ID(数字)
+	 * 创建人ID
 	 */
-	private Long uniqueId;
+	private Long uid;
 	
 	/**
-	 * 角色名称
+	 * 任务组ID
 	 */
-	private String roleName;
+	private Long tgid;
 	
 	/**
-	 * 角色顺序
+	 * 1一级勤务，2二级勤务，3三级勤务，4日常处警
 	 */
-	private String roleOrder;
+	private Integer type;
 	
 	/**
-	 * 状态：1启用，0停用，2删除
+	 * 
 	 */
-	private Integer state;
+	private String name;
 	
 	/**
-	 * 更新时间
+	 * 
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date updateTime;
+	private Date startTime;
 	
 	/**
-	 * 组织ID
+	 * 
 	 */
-	private Integer corpId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date endTime;
+	
+	/**
+	 * 预留
+	 */
+	private Integer state;
 	
 	
 	
