@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 任务表
- * @time 2019-09-26 16:30:43
+ * @time 2019-09-27 12:16:52
  */
 @Data
 public class Task {
@@ -21,6 +21,11 @@ public class Task {
 	 * 
 	 */
 	private Long id;
+	
+	/**
+	 * 
+	 */
+	private Integer corpId;
 	
 	/**
 	 * 

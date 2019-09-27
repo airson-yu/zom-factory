@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.TaskMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-09-26 16:30:42 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-09-27 12:16:51 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">rtv_task</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns">A.id AS id,A.unique_id AS uniqueId,A.uid AS uid,A.tgid AS tgid,A.type AS type,A.name AS name,A.start_time AS startTime,A.end_time AS endTime,A.state AS state</sql>
+    <sql id="baseColumns">A.id AS id,A.corp_id AS corpId,A.unique_id AS uniqueId,A.uid AS uid,A.tgid AS tgid,A.type AS type,A.name AS name,A.start_time AS startTime,A.end_time AS endTime,A.state AS state</sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
@@ -61,32 +61,32 @@
 	<!-- <-#-if cMap_has_next>,</-#-if> -->
 	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.Task">
 	    UPDATE <include refid="table"/>
-		<set>unique_id = #{uniqueId,jdbcType=VARCHAR},uid = #{uid,jdbcType=BIGINT},tgid = #{tgid,jdbcType=BIGINT},type = #{type,jdbcType=INTEGER},name = #{name,jdbcType=VARCHAR},start_time = #{startTime,jdbcType=TIMESTAMP},end_time = #{endTime,jdbcType=TIMESTAMP},state = #{state,jdbcType=INTEGER},</set>
+		<set>corp_id = #{corpId,jdbcType=INTEGER},unique_id = #{uniqueId,jdbcType=VARCHAR},uid = #{uid,jdbcType=BIGINT},tgid = #{tgid,jdbcType=BIGINT},type = #{type,jdbcType=INTEGER},name = #{name,jdbcType=VARCHAR},start_time = #{startTime,jdbcType=TIMESTAMP},end_time = #{endTime,jdbcType=TIMESTAMP},state = #{state,jdbcType=INTEGER},</set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
 
 	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.Task">
 	    UPDATE <include refid="table"/>
-		<set><if test="uniqueId != null">unique_id = #{uniqueId,jdbcType=VARCHAR},</if><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="tgid != null">tgid = #{tgid,jdbcType=BIGINT},</if><if test="type != null">type = #{type,jdbcType=INTEGER},</if><if test="name != null">name = #{name,jdbcType=VARCHAR},</if><if test="startTime != null">start_time = #{startTime,jdbcType=TIMESTAMP},</if><if test="endTime != null">end_time = #{endTime,jdbcType=TIMESTAMP},</if><if test="state != null">state = #{state,jdbcType=INTEGER},</if></set>
+		<set><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if><if test="uniqueId != null">unique_id = #{uniqueId,jdbcType=VARCHAR},</if><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="tgid != null">tgid = #{tgid,jdbcType=BIGINT},</if><if test="type != null">type = #{type,jdbcType=INTEGER},</if><if test="name != null">name = #{name,jdbcType=VARCHAR},</if><if test="startTime != null">start_time = #{startTime,jdbcType=TIMESTAMP},</if><if test="endTime != null">end_time = #{endTime,jdbcType=TIMESTAMP},</if><if test="state != null">state = #{state,jdbcType=INTEGER},</if></set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
     <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
 
 	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
 	<insert id="insert" parameterType="com.zom.common.dao.po.Task" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO <include refid="table"/>(unique_id,uid,tgid,type,name,start_time,end_time,state)
-	    VALUES( #{uniqueId,jdbcType=VARCHAR},#{uid,jdbcType=BIGINT},#{tgid,jdbcType=BIGINT},#{type,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{state,jdbcType=INTEGER})
+	    INSERT INTO <include refid="table"/>(corp_id,unique_id,uid,tgid,type,name,start_time,end_time,state)
+	    VALUES( #{corpId,jdbcType=INTEGER},#{uniqueId,jdbcType=VARCHAR},#{uid,jdbcType=BIGINT},#{tgid,jdbcType=BIGINT},#{type,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{state,jdbcType=INTEGER})
 	</insert>
 
 	<insert id="insertSelective" parameterType="com.zom.common.dao.po.Task" useGeneratedKeys="true" keyProperty="id">
 	    INSERT INTO <include refid="table"/>
-		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="uniqueId != null"> unique_id,</if><if test="uid != null"> uid,</if><if test="tgid != null"> tgid,</if><if test="type != null"> type,</if><if test="name != null"> name,</if><if test="startTime != null"> start_time,</if><if test="endTime != null"> end_time,</if><if test="state != null"> state,</if></trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="uniqueId != null">#{uniqueId,jdbcType=VARCHAR},</if><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="tgid != null">#{tgid,jdbcType=BIGINT},</if><if test="type != null">#{type,jdbcType=INTEGER},</if><if test="name != null">#{name,jdbcType=VARCHAR},</if><if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if><if test="endTime != null">#{endTime,jdbcType=TIMESTAMP},</if><if test="state != null">#{state,jdbcType=INTEGER},</if></trim>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="corpId != null"> corp_id,</if><if test="uniqueId != null"> unique_id,</if><if test="uid != null"> uid,</if><if test="tgid != null"> tgid,</if><if test="type != null"> type,</if><if test="name != null"> name,</if><if test="startTime != null"> start_time,</if><if test="endTime != null"> end_time,</if><if test="state != null"> state,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="uniqueId != null">#{uniqueId,jdbcType=VARCHAR},</if><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="tgid != null">#{tgid,jdbcType=BIGINT},</if><if test="type != null">#{type,jdbcType=INTEGER},</if><if test="name != null">#{name,jdbcType=VARCHAR},</if><if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if><if test="endTime != null">#{endTime,jdbcType=TIMESTAMP},</if><if test="state != null">#{state,jdbcType=INTEGER},</if></trim>
 	</insert>
 
 	<insert id="insertBatch">
-		INSERT INTO <include refid="table"/>(unique_id,uid,tgid,type,name,start_time,end_time,state)
-		VALUES <foreach collection="list" item="c" separator=",">(#{c.uniqueId,jdbcType=VARCHAR},#{c.uid,jdbcType=BIGINT},#{c.tgid,jdbcType=BIGINT},#{c.type,jdbcType=INTEGER},#{c.name,jdbcType=VARCHAR},#{c.startTime,jdbcType=TIMESTAMP},#{c.endTime,jdbcType=TIMESTAMP},#{c.state,jdbcType=INTEGER})</foreach>
+		INSERT INTO <include refid="table"/>(corp_id,unique_id,uid,tgid,type,name,start_time,end_time,state)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.corpId,jdbcType=INTEGER},#{c.uniqueId,jdbcType=VARCHAR},#{c.uid,jdbcType=BIGINT},#{c.tgid,jdbcType=BIGINT},#{c.type,jdbcType=INTEGER},#{c.name,jdbcType=VARCHAR},#{c.startTime,jdbcType=TIMESTAMP},#{c.endTime,jdbcType=TIMESTAMP},#{c.state,jdbcType=INTEGER})</foreach>
 	</insert>
   	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
 
