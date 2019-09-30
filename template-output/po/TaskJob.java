@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 工作内容表
- * @time 2019-09-27 12:16:52
+ * @time 2019-09-30 14:03:25
  */
 @Data
 public class TaskJob {
@@ -55,12 +55,14 @@ public class TaskJob {
 	/**
 	 * 不带日期的时间
 	 */
-	private String startTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date startTime;
 	
 	/**
 	 * 不带日期的时间
 	 */
-	private String endTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date endTime;
 	
 	/**
 	 * 登录人数
@@ -81,6 +83,11 @@ public class TaskJob {
 	 * 预留
 	 */
 	private Integer state;
+	
+	/**
+	 * 部门
+	 */
+	private String dept;
 	
 	
 	
