@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zom.common.dao.mapper.TaskUserMapper">
+<mapper namespace="com.zom.common.dao.mapper.TaskExecMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-10-12 10:19:14 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-11-04 10:39:25 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
-	<sql id="table">rtv_task_user</sql>
+	<sql id="table">rtv_task_exec</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns">A.id AS id,A.corp_id AS corpId,A.task_id AS taskId,A.task_job_id AS taskJobId,A.uid AS uid,A.logon_time AS logonTime</sql>
+    <sql id="baseColumns">A.id AS id,A.corp_id AS corpId,A.task_id AS taskId,A.exec_con_id AS execConId</sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
@@ -37,18 +37,18 @@
 
 
 	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
-	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TaskUser">
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TaskExec">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TaskUser">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TaskExec">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TaskUser">
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TaskExec">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
 	</select>
 
-	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TaskUser">
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TaskExec">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
 	</select>
 
@@ -59,34 +59,34 @@
 
 	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
 	<!-- <-#-if cMap_has_next>,</-#-if> -->
-	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.TaskUser">
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.TaskExec">
 	    UPDATE <include refid="table"/>
-		<set>corp_id = #{corpId,jdbcType=INTEGER},task_id = #{taskId,jdbcType=BIGINT},task_job_id = #{taskJobId,jdbcType=BIGINT},uid = #{uid,jdbcType=BIGINT},logon_time = #{logonTime,jdbcType=TIMESTAMP},</set>
+		<set>corp_id = #{corpId,jdbcType=INTEGER},task_id = #{taskId,jdbcType=BIGINT},exec_con_id = #{execConId,jdbcType=BIGINT},</set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.TaskUser">
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.TaskExec">
 	    UPDATE <include refid="table"/>
-		<set><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if><if test="taskId != null">task_id = #{taskId,jdbcType=BIGINT},</if><if test="taskJobId != null">task_job_id = #{taskJobId,jdbcType=BIGINT},</if><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="logonTime != null">logon_time = #{logonTime,jdbcType=TIMESTAMP},</if></set>
+		<set><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if><if test="taskId != null">task_id = #{taskId,jdbcType=BIGINT},</if><if test="execConId != null">exec_con_id = #{execConId,jdbcType=BIGINT},</if></set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
     <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
 
 	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
-	<insert id="insert" parameterType="com.zom.common.dao.po.TaskUser" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO <include refid="table"/>(corp_id,task_id,task_job_id,uid,logon_time)
-	    VALUES( #{corpId,jdbcType=INTEGER},#{taskId,jdbcType=BIGINT},#{taskJobId,jdbcType=BIGINT},#{uid,jdbcType=BIGINT},#{logonTime,jdbcType=TIMESTAMP})
+	<insert id="insert" parameterType="com.zom.common.dao.po.TaskExec" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(corp_id,task_id,exec_con_id)
+	    VALUES( #{corpId,jdbcType=INTEGER},#{taskId,jdbcType=BIGINT},#{execConId,jdbcType=BIGINT})
 	</insert>
 
-	<insert id="insertSelective" parameterType="com.zom.common.dao.po.TaskUser" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.TaskExec" useGeneratedKeys="true" keyProperty="id">
 	    INSERT INTO <include refid="table"/>
-		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="corpId != null"> corp_id,</if><if test="taskId != null"> task_id,</if><if test="taskJobId != null"> task_job_id,</if><if test="uid != null"> uid,</if><if test="logonTime != null"> logon_time,</if></trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="taskId != null">#{taskId,jdbcType=BIGINT},</if><if test="taskJobId != null">#{taskJobId,jdbcType=BIGINT},</if><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="logonTime != null">#{logonTime,jdbcType=TIMESTAMP},</if></trim>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="corpId != null"> corp_id,</if><if test="taskId != null"> task_id,</if><if test="execConId != null"> exec_con_id,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="taskId != null">#{taskId,jdbcType=BIGINT},</if><if test="execConId != null">#{execConId,jdbcType=BIGINT},</if></trim>
 	</insert>
 
 	<insert id="insertBatch">
-		INSERT INTO <include refid="table"/>(corp_id,task_id,task_job_id,uid,logon_time)
-		VALUES <foreach collection="list" item="c" separator=",">(#{c.corpId,jdbcType=INTEGER},#{c.taskId,jdbcType=BIGINT},#{c.taskJobId,jdbcType=BIGINT},#{c.uid,jdbcType=BIGINT},#{c.logonTime,jdbcType=TIMESTAMP})</foreach>
+		INSERT INTO <include refid="table"/>(corp_id,task_id,exec_con_id)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.corpId,jdbcType=INTEGER},#{c.taskId,jdbcType=BIGINT},#{c.execConId,jdbcType=BIGINT})</foreach>
 	</insert>
   	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
 

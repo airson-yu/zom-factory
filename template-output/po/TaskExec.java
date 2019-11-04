@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: TaskUser
+ * @description PO: TaskExec
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 任务-用户关联表
- * @time 2019-10-12 10:19:14
+ * @remark 任务-执行调度台表
+ * @time 2019-11-04 10:39:25
  */
 @Data
-public class TaskUser {
+public class TaskExec {
 
 	/**
 	 * 
@@ -33,20 +33,9 @@ public class TaskUser {
 	private Long taskId;
 	
 	/**
-	 * 工作内容ID
+	 * 执行的调度台ID
 	 */
-	private Long taskJobId;
-	
-	/**
-	 * 分配的用户ID
-	 */
-	private Long uid;
-	
-	/**
-	 * 登录时间
-	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date logonTime;
+	private Long execConId;
 	
 	
 	
