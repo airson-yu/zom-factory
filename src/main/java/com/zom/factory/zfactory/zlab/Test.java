@@ -12,7 +12,16 @@ public class Test {
     public static void main(String[] args) {
         /*new Test().test();
         testFor();*/
-        testCalendar();
+        //testCalendar();
+        testString();
+    }
+
+    public static void testString() {
+        String b = "aaa";
+        String a = new String("aaa");
+        String c = "aaa";
+        System.out.println(a.intern() == b);
+        System.out.println(c == b);
     }
 
     public void test() {
