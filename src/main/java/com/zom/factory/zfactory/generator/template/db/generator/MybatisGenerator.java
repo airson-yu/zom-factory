@@ -10,7 +10,7 @@ public class MybatisGenerator {
         //String[] tables = {"user"};
         //String [] tables = {"rtv_nfc","rtv_nfc_record"};
         //String[] tables = {"rtv_role_plan", "rtv_role_plan_role"};
-        String[] tables = {"rtv_task_charge", "rtv_task_exec"};
+        String[] tables = {"rtv_rollcall_result", "rtv_rollcall_statistics", "rtv_rollcall_task"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
