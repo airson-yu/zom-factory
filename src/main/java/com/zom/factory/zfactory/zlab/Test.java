@@ -22,6 +22,13 @@ public class Test {
         String c = "aaa";
         System.out.println(a.intern() == b);
         System.out.println(c == b);
+
+        Integer aa = 2;
+        Integer bb = 3;
+
+        float num= (float)aa/bb;
+        System.out.println(num);
+
     }
 
     public void test() {
