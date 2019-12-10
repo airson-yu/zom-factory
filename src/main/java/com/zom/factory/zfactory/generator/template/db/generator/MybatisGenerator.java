@@ -11,7 +11,8 @@ public class MybatisGenerator {
         //String [] tables = {"rtv_nfc","rtv_nfc_record"};
         //String[] tables = {"rtv_role_plan", "rtv_role_plan_role"};
         //String[] tables = {"rtv_rollcall_result", "rtv_rollcall_statistics", "rtv_rollcall_task"};
-        String[] tables = {"rtv_feedback", "rtv_gps_info", "rtv_group_picture_map", "offline_video_record_table", "rtv_password_reset_code", "rtv_3rdkey", "rtv_workorder"};
+        //String[] tables = {"rtv_feedback", "rtv_gps_info", "rtv_group_picture_map", "offline_video_record_table", "rtv_password_reset_code", "rtv_3rdkey", "rtv_workorder"};
+        String[] tables = {"rtv_user_group_map"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
