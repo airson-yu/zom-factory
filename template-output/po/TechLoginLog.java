@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: AppWhiteList
+ * @description PO: TechLoginLog
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark APP白名单记录表
- * @time 2019-12-11 15:42:59
+ * @remark 登录日志表
+ * @time 2019-12-13 17:56:27
  */
 @Data
-public class AppWhiteList {
+public class TechLoginLog {
 
 	/**
 	 * 
@@ -23,29 +23,30 @@ public class AppWhiteList {
 	private Long id;
 	
 	/**
-	 * app name
+	 * 用户ID
 	 */
-	private String aname;
+	private Long userId;
 	
 	/**
-	 * app label name
+	 * 用户名
 	 */
-	private String label;
+	private String userName;
 	
 	/**
-	 * 
+	 * 账号
 	 */
-	private String descp;
+	private String account;
 	
 	/**
-	 * phone type, the app name may have different name on diffent type
+	 * 登录IP
 	 */
-	private String device;
+	private String loginIp;
 	
 	/**
-	 * corp Id
+	 * 登录时间
 	 */
-	private Integer corpId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date loginTime;
 	
 	
 	

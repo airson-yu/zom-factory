@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zom.common.dao.mapper.UserPhoneRecordMapper">
+<mapper namespace="com.zom.common.dao.mapper.TechLoginLogMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-12-11 15:42:59 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2019-12-13 17:56:27 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
-	<sql id="table">rtv_user_phone_record</sql>
+	<sql id="table">tech_login_log</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns">A.id AS id,A.uid AS uid,A.start AS start,A.end AS end,A.phone AS phone,A.type AS type,A.corp_id AS corpId,A.report_date AS reportDate</sql>
+    <sql id="baseColumns">A.id AS id,A.user_id AS userId,A.user_name AS userName,A.account AS account,A.login_ip AS loginIp,A.login_time AS loginTime</sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
@@ -37,18 +37,18 @@
 
 
 	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
-	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.UserPhoneRecord">
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TechLoginLog">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.UserPhoneRecord">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.TechLoginLog">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.UserPhoneRecord">
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TechLoginLog">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
 	</select>
 
-	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.UserPhoneRecord">
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.TechLoginLog">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
 	</select>
 
@@ -59,34 +59,34 @@
 
 	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
 	<!-- <-#-if cMap_has_next>,</-#-if> -->
-	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.UserPhoneRecord">
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.TechLoginLog">
 	    UPDATE <include refid="table"/>
-		<set>uid = #{uid,jdbcType=BIGINT},start = #{start,jdbcType=TIMESTAMP},end = #{end,jdbcType=TIMESTAMP},phone = #{phone,jdbcType=BIGINT},type = #{type,jdbcType=INTEGER},corp_id = #{corpId,jdbcType=INTEGER},report_date = #{reportDate,jdbcType=TIMESTAMP},</set>
+		<set>user_id = #{userId,jdbcType=BIGINT},user_name = #{userName,jdbcType=VARCHAR},account = #{account,jdbcType=VARCHAR},login_ip = #{loginIp,jdbcType=VARCHAR},login_time = #{loginTime,jdbcType=TIMESTAMP},</set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.UserPhoneRecord">
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.TechLoginLog">
 	    UPDATE <include refid="table"/>
-		<set><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="start != null">start = #{start,jdbcType=TIMESTAMP},</if><if test="end != null">end = #{end,jdbcType=TIMESTAMP},</if><if test="phone != null">phone = #{phone,jdbcType=BIGINT},</if><if test="type != null">type = #{type,jdbcType=INTEGER},</if><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if><if test="reportDate != null">report_date = #{reportDate,jdbcType=TIMESTAMP},</if></set>
+		<set><if test="userId != null">user_id = #{userId,jdbcType=BIGINT},</if><if test="userName != null">user_name = #{userName,jdbcType=VARCHAR},</if><if test="account != null">account = #{account,jdbcType=VARCHAR},</if><if test="loginIp != null">login_ip = #{loginIp,jdbcType=VARCHAR},</if><if test="loginTime != null">login_time = #{loginTime,jdbcType=TIMESTAMP},</if></set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
     <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
 
 	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
-	<insert id="insert" parameterType="com.zom.common.dao.po.UserPhoneRecord" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO <include refid="table"/>(uid,start,end,phone,type,corp_id,report_date)
-	    VALUES( #{uid,jdbcType=BIGINT},#{start,jdbcType=TIMESTAMP},#{end,jdbcType=TIMESTAMP},#{phone,jdbcType=BIGINT},#{type,jdbcType=INTEGER},#{corpId,jdbcType=INTEGER},#{reportDate,jdbcType=TIMESTAMP})
+	<insert id="insert" parameterType="com.zom.common.dao.po.TechLoginLog" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(user_id,user_name,account,login_ip,login_time)
+	    VALUES( #{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR},#{account,jdbcType=VARCHAR},#{loginIp,jdbcType=VARCHAR},#{loginTime,jdbcType=TIMESTAMP})
 	</insert>
 
-	<insert id="insertSelective" parameterType="com.zom.common.dao.po.UserPhoneRecord" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.TechLoginLog" useGeneratedKeys="true" keyProperty="id">
 	    INSERT INTO <include refid="table"/>
-		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="uid != null"> uid,</if><if test="start != null"> start,</if><if test="end != null"> end,</if><if test="phone != null"> phone,</if><if test="type != null"> type,</if><if test="corpId != null"> corp_id,</if><if test="reportDate != null"> report_date,</if></trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="start != null">#{start,jdbcType=TIMESTAMP},</if><if test="end != null">#{end,jdbcType=TIMESTAMP},</if><if test="phone != null">#{phone,jdbcType=BIGINT},</if><if test="type != null">#{type,jdbcType=INTEGER},</if><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="reportDate != null">#{reportDate,jdbcType=TIMESTAMP},</if></trim>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="userId != null"> user_id,</if><if test="userName != null"> user_name,</if><if test="account != null"> account,</if><if test="loginIp != null"> login_ip,</if><if test="loginTime != null"> login_time,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="userId != null">#{userId,jdbcType=BIGINT},</if><if test="userName != null">#{userName,jdbcType=VARCHAR},</if><if test="account != null">#{account,jdbcType=VARCHAR},</if><if test="loginIp != null">#{loginIp,jdbcType=VARCHAR},</if><if test="loginTime != null">#{loginTime,jdbcType=TIMESTAMP},</if></trim>
 	</insert>
 
 	<insert id="insertBatch">
-		INSERT INTO <include refid="table"/>(uid,start,end,phone,type,corp_id,report_date)
-		VALUES <foreach collection="list" item="c" separator=",">(#{c.uid,jdbcType=BIGINT},#{c.start,jdbcType=TIMESTAMP},#{c.end,jdbcType=TIMESTAMP},#{c.phone,jdbcType=BIGINT},#{c.type,jdbcType=INTEGER},#{c.corpId,jdbcType=INTEGER},#{c.reportDate,jdbcType=TIMESTAMP})</foreach>
+		INSERT INTO <include refid="table"/>(user_id,user_name,account,login_ip,login_time)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.userId,jdbcType=BIGINT},#{c.userName,jdbcType=VARCHAR},#{c.account,jdbcType=VARCHAR},#{c.loginIp,jdbcType=VARCHAR},#{c.loginTime,jdbcType=TIMESTAMP})</foreach>
 	</insert>
   	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
 
