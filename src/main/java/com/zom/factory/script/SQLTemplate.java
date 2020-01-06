@@ -1,4 +1,4 @@
-package com.zom.keep.tech.script;
+package com.zom.factory.script;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
