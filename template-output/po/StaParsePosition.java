@@ -8,45 +8,35 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: TechLoginLog
+ * @description PO: StaParsePosition
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 登录日志表
- * @time 2019-12-13 17:56:27
+ * @remark 数据解析位置标识表
+ * @time 2020-02-27 09:57:44
  */
 @Data
-public class TechLoginLog {
+public class StaParsePosition {
 
 	/**
-	 * 
+	 * 表项主键
 	 */
 	private Long id;
 	
 	/**
-	 * 用户ID
+	 * 数据表名
 	 */
-	private Long userId;
+	private String tableName;
 	
 	/**
-	 * 用户名
+	 * 数据表主键ID：标识上次数据解析到哪个位置
 	 */
-	private String userName;
+	private Long lastPkId;
 	
 	/**
-	 * 账号
-	 */
-	private String account;
-	
-	/**
-	 * 登录IP
-	 */
-	private String loginIp;
-	
-	/**
-	 * 登录时间
+	 * 更新时间
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date loginTime;
+	private Date updateTime;
 	
 	
 	

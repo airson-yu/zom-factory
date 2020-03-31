@@ -41,10 +41,13 @@ public class Executor {
      */
     public static List<Table> getTableList(int filter, String[] tableNameAry) throws Exception {
         System.out.println("从 " + Cfg.db_name + " 数据库中获取表数据: \n");
-        String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='base table';";
+        //MYSQL 5.X
+        //String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='base table';";
+        //MYSQL 8.X
+        String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='BASE TABLE';";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
-        List<Table> tableList = new ArrayList<Table>();
+        List<Table> tableList = new ArrayList<>();
         while (rs.next()) {
             boolean filterFlag = false;
             String table_name = rs.getString("table_name");
@@ -79,10 +82,13 @@ public class Executor {
      */
     public static List<String> getTableNameList(int filter, String[] tableNameAry) throws Exception {
         System.out.println("从 " + Cfg.db_name + " 数据库中获取表数据: \n");
-        String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='base table';";
+        //MYSQL 5.X
+        //String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='base table';";
+        //MYSQL 8.X
+        String sql = "select table_name,table_comment from INFORMATION_SCHEMA.TABLES where table_schema='" + Cfg.db_name + "' and table_type='BASE TABLE';";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
-        List<String> tableList = new ArrayList<String>();
+        List<String> tableList = new ArrayList<>();
         while (rs.next()) {
             boolean filterFlag = false;
             String table_name = rs.getString("table_name");
@@ -112,8 +118,11 @@ public class Executor {
      */
     public static List<Column> getColumnsList(String table_name) throws Exception {
         if (null == table_name) return null;
-        List<Column> columnsList = new ArrayList<Column>();
-        String sql = "select column_name,data_type,column_comment from INFORMATION_SCHEMA.COLUMNS where table_schema='" + Cfg.db_name + "' and table_name='" + table_name + "';";
+        List<Column> columnsList = new ArrayList<>();
+        //MYSQL 5.X
+        //String sql = "select column_name,data_type,column_comment from INFORMATION_SCHEMA.COLUMNS where table_schema='" + Cfg.db_name + "' and table_name='" + table_name + "';";
+        //MYSQL 8.X
+        String sql = "select column_name,data_type,column_comment from INFORMATION_SCHEMA.COLUMNS where table_schema='" + Cfg.db_name + "' and table_name='" + table_name + "' ORDER BY ORDINAL_POSITION;";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {

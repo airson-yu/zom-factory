@@ -28,8 +28,8 @@ public class Cfg {
 
     public static String filter_prefix = "rtv_"; // 需要过滤的前缀：rtv_ zom_
 
-    public static String jdbc_driver = "com.mysql.jdbc.Driver"; // 加载JDBC驱动
-    public static String jdbc_url    = "jdbc:mysql://127.0.0.1/" + db_name; // 连接服务器和数据库test
+    public static String jdbc_driver = "com.mysql.cj.jdbc.Driver"; // 加载JDBC驱动
+    public static String jdbc_url    = "jdbc:mysql://localhost/" + db_name + "?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true"; // 连接服务器和数据库test
     public static String jdbc_user   = "root"; // 默认用户名
     public static String jdbc_pswd   = "root"; // 密码
 
