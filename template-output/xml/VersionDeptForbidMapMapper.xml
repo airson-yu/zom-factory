@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zom.common.dao.mapper.StaParsePositionMapper">
+<mapper namespace="com.zom.common.dao.mapper.VersionDeptForbidMapMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-02-27 09:57:44 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-04-01 10:50:11 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
-	<sql id="table">sta_parse_position</sql>
+	<sql id="table">rtv_version_dept_forbid_map</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns">A.id AS id,A.table_name AS tableName,A.last_pk_id AS lastPkId,A.update_time AS updateTime</sql>
+    <sql id="baseColumns">A.id AS id,A.vid AS vid,A.dept_unique_id AS deptUniqueId,A.type AS type,A.corp_id AS corpId</sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
@@ -37,18 +37,18 @@
 
 
 	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
-	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaParsePosition">
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.VersionDeptForbidMap">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaParsePosition">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.VersionDeptForbidMap">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaParsePosition">
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.VersionDeptForbidMap">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
 	</select>
 
-	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaParsePosition">
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.VersionDeptForbidMap">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
 	</select>
 
@@ -59,34 +59,34 @@
 
 	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
 	<!-- <-#-if cMap_has_next>,</-#-if> -->
-	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.StaParsePosition">
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.VersionDeptForbidMap">
 	    UPDATE <include refid="table"/>
-		<set>table_name = #{tableName,jdbcType=VARCHAR},last_pk_id = #{lastPkId,jdbcType=BIGINT},update_time = #{updateTime,jdbcType=TIMESTAMP},</set>
+		<set>vid = #{vid,jdbcType=BIGINT},dept_unique_id = #{deptUniqueId,jdbcType=VARCHAR},type = #{type,jdbcType=INTEGER},corp_id = #{corpId,jdbcType=INTEGER},</set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.StaParsePosition">
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.VersionDeptForbidMap">
 	    UPDATE <include refid="table"/>
-		<set><if test="tableName != null">table_name = #{tableName,jdbcType=VARCHAR},</if><if test="lastPkId != null">last_pk_id = #{lastPkId,jdbcType=BIGINT},</if><if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if></set>
+		<set><if test="vid != null">vid = #{vid,jdbcType=BIGINT},</if><if test="deptUniqueId != null">dept_unique_id = #{deptUniqueId,jdbcType=VARCHAR},</if><if test="type != null">type = #{type,jdbcType=INTEGER},</if><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if></set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
     <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
 
 	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
-	<insert id="insert" parameterType="com.zom.common.dao.po.StaParsePosition" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO <include refid="table"/>(table_name,last_pk_id,update_time)
-	    VALUES( #{tableName,jdbcType=VARCHAR},#{lastPkId,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP})
+	<insert id="insert" parameterType="com.zom.common.dao.po.VersionDeptForbidMap" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(vid,dept_unique_id,type,corp_id)
+	    VALUES( #{vid,jdbcType=BIGINT},#{deptUniqueId,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{corpId,jdbcType=INTEGER})
 	</insert>
 
-	<insert id="insertSelective" parameterType="com.zom.common.dao.po.StaParsePosition" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.VersionDeptForbidMap" useGeneratedKeys="true" keyProperty="id">
 	    INSERT INTO <include refid="table"/>
-		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="tableName != null"> table_name,</if><if test="lastPkId != null"> last_pk_id,</if><if test="updateTime != null"> update_time,</if></trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="tableName != null">#{tableName,jdbcType=VARCHAR},</if><if test="lastPkId != null">#{lastPkId,jdbcType=BIGINT},</if><if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if></trim>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="vid != null"> vid,</if><if test="deptUniqueId != null"> dept_unique_id,</if><if test="type != null"> type,</if><if test="corpId != null"> corp_id,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="vid != null">#{vid,jdbcType=BIGINT},</if><if test="deptUniqueId != null">#{deptUniqueId,jdbcType=VARCHAR},</if><if test="type != null">#{type,jdbcType=INTEGER},</if><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if></trim>
 	</insert>
 
 	<insert id="insertBatch">
-		INSERT INTO <include refid="table"/>(table_name,last_pk_id,update_time)
-		VALUES <foreach collection="list" item="c" separator=",">(#{c.tableName,jdbcType=VARCHAR},#{c.lastPkId,jdbcType=BIGINT},#{c.updateTime,jdbcType=TIMESTAMP})</foreach>
+		INSERT INTO <include refid="table"/>(vid,dept_unique_id,type,corp_id)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.vid,jdbcType=BIGINT},#{c.deptUniqueId,jdbcType=VARCHAR},#{c.type,jdbcType=INTEGER},#{c.corpId,jdbcType=INTEGER})</foreach>
 	</insert>
   	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
 
