@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: VersionDeptForbidMap
+ * @description PO: MetroBind
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 版本关联到部门，部门下的用户禁止用老版本登录
- * @time 2020-04-01 10:50:11
+ * @remark 
+ * @time 2020-04-24 09:41:23
  */
 @Data
-public class VersionDeptForbidMap {
+public class MetroBind {
 
 	/**
 	 * 
@@ -23,22 +23,33 @@ public class VersionDeptForbidMap {
 	private Long id;
 	
 	/**
-	 * 版本ID
+	 * 序号
 	 */
-	private Long vid;
+	private String serial;
 	
 	/**
-	 * 部门UNIQUE ID
+	 * 车次
 	 */
-	private String deptUniqueId;
+	private String lineNum;
 	
 	/**
-	 * 禁止类型：1禁止低版本登录
+	 * 列车编号
 	 */
-	private Integer type;
+	private String metroNum;
 	
 	/**
-	 * 组织ID
+	 * 用户ID
+	 */
+	private Long userId;
+	
+	/**
+	 * 更新时间
+	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date updateTime;
+	
+	/**
+	 * 
 	 */
 	private Integer corpId;
 	
