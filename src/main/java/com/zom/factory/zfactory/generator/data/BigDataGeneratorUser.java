@@ -41,7 +41,8 @@ public class BigDataGeneratorUser {
     private static       String jdbc_pswd  = windows ? "root" : "!VDDdd357!";
 
     // --- 数据规模配置 ---
-    private static boolean sm = true;
+    private static boolean sm         = true;
+    private static boolean large_zone = false;
 
     private static final long zone_count = sm ? 30 : 255;
     private static final long corp_count = sm ? 1 : 500;
@@ -118,14 +119,17 @@ public class BigDataGeneratorUser {
         int id = 1;
         while (id <= count) {
             ZoneIdAssign zone = new ZoneIdAssign();
-            /*zone.setMaxUid((long) ((id << 16) + 0x1FFF));
-            zone.setMaxTgid((long) ((id << 16) + 0xFFFF));
-            zone.setCurUid((long) ((id << 16) + 1));
-            zone.setCurTgid((long) ((id << 16) + 0x2000));*/
-            zone.setMaxUid((long) (id << 16) + 0x7FFF);
-            zone.setMaxTgid((long) (id << 16) + 0xFFFF);
-            zone.setCurUid((long) (id << 16) + 0);
-            zone.setCurTgid((long) (id << 16) + 0x7FFF + 1);
+            if (large_zone) {
+                zone.setMaxUid((long) (id << 16) + 0x7FFF);
+                zone.setMaxTgid((long) (id << 16) + 0xFFFF);
+                zone.setCurUid((long) (id << 16) + 0);
+                zone.setCurTgid((long) (id << 16) + 0x7FFF + 1);
+            } else {
+                zone.setMaxUid((long) ((id << 16) + 0x1FFF));
+                zone.setMaxTgid((long) ((id << 16) + 0xFFFF));
+                zone.setCurUid((long) ((id << 16) + 1));
+                zone.setCurTgid((long) ((id << 16) + 0x2000));
+            }
             zone.setName("zone" + id);
             zone.setNum(id);
             zone.setId(id);
@@ -199,27 +203,50 @@ public class BigDataGeneratorUser {
     public static void rtv_group() throws Exception {
         long total = user_count;
         System.out.println(" -------- rtv_group(dcg)： -------- ");
-        createFile("rtv_group", total);
-        //long phone = 13700000000l;//XXX 通过手机号来判断是否为最后一个新增用户 phone == (sm ? 13700210000l : 137020000l)
+        createFile("rtv_group2", total);
         int zoneId = 1;
 
-        long id = 1;
         int count = 0;
         outer:
         for (; zoneId <= zone_count; zoneId++) {
             long start_id = (zoneId << 16) + 0;
             long cur_id = start_id;
             for (; cur_id <= (start_id + 32765); cur_id++) { //32767
-                String sql = "(" + cur_id + ", 1, " + cur_id + ", 'temp', '2020-07-08 18:00:00', 1, 0, 1, 1, 1, 1, 0, NULL, '', 1, NULL, 3),";
-                if (id == total)
+                String sql = "(" + cur_id + ", 1, " + cur_id + ", 'temp', '2020-07-08 18:00:00', 1, 0, 1, 1, 1, " + zoneId + ", 0, NULL, '', 1, NULL, 3),";
+                ++count;
+                /*if (count >= total) {
                     sql = sql.substring(0, sql.length() - 1);
+                }*/ // 下面还要新增数据，这里不去除逗号
                 w1.append(sql);
-                id++;
-
-                if (++count >= total) break outer;
+                if (count >= total) {
+                    break outer;
+                }
             }
-            zoneId++;
         }
+
+        // XXX 每个zone再创建3000个组，不加人 2020年7月10日11:59:0
+        total = 30 * 3000;
+        zoneId = 1;
+        count = 0;
+        outer:
+        for (; zoneId <= zone_count; zoneId++) {
+            long large_id = (zoneId << 16) + 0x7FFF + 1;
+            long small_id = (zoneId << 16) + 0x2000;
+            long start_id = large_zone ? large_id : small_id;
+            long cur_id = start_id;
+            for (; cur_id <= (start_id + 3000); cur_id++) {
+                String sql = "(" + cur_id + ", 1, 0, 'tg_" + cur_id + "', '2020-07-10 13:00:00', 1, 0, 0, 1, " + zoneId + ", 1, 0, NULL, '', 1, NULL, 3),";
+                ++count;
+                if (count >= total) {
+                    sql = sql.substring(0, sql.length() - 1);
+                }
+                w1.append(sql);
+                if (count >= total) {
+                    break outer;
+                }
+            }
+        }
+
 
         //INSERT INTO `rtvitrunk`.`rtv_user`(`id`, `display_name`, `user_password`, `client_version`, `device`, `img_url`, `phone`, `register_date`, `last_logon_date`, `last_access_date`, `last_logon_ip`, `logon_state`, `salt`, `ts_profile`, `ts_group`, `rank`, `admin_id`, `dcg_id`, `corp_id`, `logon_name`, `priority`, `status`, `preconfig`, `default_grp`, `gps_report`, `gps_interval`, `adm_ts`, `zone_id`, `ats`, `pts`, `imei`, `lmr_uid`, `ext_did`, `extension_property`, `code`, `unit_id`, `department_id`, `original_name`, `unit_fk_id`, `department_fk_id`, `iccid`, `logon_type`, `last_update_time`, `joinlinkage`, `role_id`, `nfc`, `ext`, `create_way`, `user_role_id`, `expire_date`, `abptype`, `hardware_bind_time`, `hardware_logo`, `current_name`) VALUES
         // (65537, '张文涛', 'dfeddeeadfe9', NULL, 'portable', NULL, '11900000001', '2020-06-10 09:45:55', NULL, NULL, NULL, 'offline', 'ce7e970836ad6563', 3, 1, 0, 0, 65537, 1, '658032', 5, 1, 1, 0, 1, 30, 0, 1, 0, 0, 'imei123123', 65537, 'itrunk_65537', NULL, 'code_current_name_code', '3300000001', '3326004000', '张文涛', 1, 3, NULL, 0, '2020-07-07 15:27:56', NULL, 0, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, 'current_name123123');
