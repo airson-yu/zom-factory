@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: MetroBind
+ * @description PO: IccidChangeRecord
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 
- * @time 2020-04-24 09:41:23
+ * @remark 用户的ICCID变更记录表
+ * @time 2020-07-16 11:14:40
  */
 @Data
-public class MetroBind {
+public class IccidChangeRecord {
 
 	/**
 	 * 
@@ -23,30 +23,35 @@ public class MetroBind {
 	private Long id;
 	
 	/**
-	 * 序号
-	 */
-	private String serial;
-	
-	/**
-	 * 车次
-	 */
-	private String lineNum;
-	
-	/**
-	 * 列车编号
-	 */
-	private String metroNum;
-	
-	/**
 	 * 用户ID
 	 */
-	private Long userId;
+	private Long uid;
+	
+	/**
+	 * 用户名
+	 */
+	private String username;
+	
+	/**
+	 * 旧iccid
+	 */
+	private String oldIccid;
+	
+	/**
+	 * 新iccid
+	 */
+	private String newIccid;
+	
+	/**
+	 * IMEI
+	 */
+	private String imei;
 	
 	/**
 	 * 更新时间
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date updateTime;
+	private Date createTime;
 	
 	/**
 	 * 

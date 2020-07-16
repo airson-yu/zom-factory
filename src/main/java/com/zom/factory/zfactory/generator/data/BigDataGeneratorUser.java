@@ -178,9 +178,9 @@ public class BigDataGeneratorUser {
         int count = 0;
         outer:
         for (; zoneId <= zone_count; zoneId++) {
-            long start_id = (zoneId << 16) + 0;
+            long start_id = (zoneId << 16) + 1;
             long cur_id = start_id;
-            for (; cur_id <= (start_id + 32765); cur_id++) { //32767
+            for (; cur_id <= (start_id + 8100); cur_id++) { //8191
                 String sql = "(" + cur_id + ", 'u" + cur_id + "', 'dfeddeeadfe9', NULL, 'portable', NULL, '" + (phone++) + "', '2020-07-08 18:00:00', NULL, NULL, NULL, 'offline', 'ce7e970836ad6563', 1, 1, 0, 0, " + cur_id + ", 1, '" + cur_id + "', 5, 1, 1, 0, 1, 30, 0, " + zoneId + ", 0, 0, NULL, " + cur_id + ", 'itrunk_" + cur_id + "', NULL, NULL, '1', '1', 'u" + cur_id + "', 1, 1, NULL, 0, '2020-07-08 18:00:00'),";
                 if (id == total)
                     sql = sql.substring(0, sql.length() - 1);
@@ -191,6 +191,7 @@ public class BigDataGeneratorUser {
             }
         }
 
+        // 使用的是老数据库版本，对应可查看rtv_tmp.rtv_group2
         //INSERT INTO `rtvitrunk`.`rtv_user`(`id`, `display_name`, `user_password`, `client_version`, `device`, `img_url`, `phone`, `register_date`, `last_logon_date`, `last_access_date`, `last_logon_ip`, `logon_state`, `salt`, `ts_profile`, `ts_group`, `rank`, `admin_id`, `dcg_id`, `corp_id`, `logon_name`, `priority`, `status`, `preconfig`, `default_grp`, `gps_report`, `gps_interval`, `adm_ts`, `zone_id`, `ats`, `pts`, `imei`, `lmr_uid`, `ext_did`, `extension_property`, `code`, `unit_id`, `department_id`, `original_name`, `unit_fk_id`, `department_fk_id`, `iccid`, `logon_type`, `last_update_time`, `joinlinkage`, `role_id`, `nfc`, `ext`, `create_way`, `user_role_id`, `expire_date`, `abptype`, `hardware_bind_time`, `hardware_logo`, `current_name`) VALUES
         // (65537, '张文涛', 'dfeddeeadfe9', NULL, 'portable', NULL, '11900000001', '2020-06-10 09:45:55', NULL, NULL, NULL, 'offline', 'ce7e970836ad6563', 3, 1, 0, 0, 65537, 1, '658032', 5, 1, 1, 0, 1, 30, 0, 1, 0, 0, 'imei123123', 65537, 'itrunk_65537', NULL, 'code_current_name_code', '3300000001', '3326004000', '张文涛', 1, 3, NULL, 0, '2020-07-07 15:27:56', NULL, 0, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, 'current_name123123');
 
@@ -203,7 +204,7 @@ public class BigDataGeneratorUser {
     public static void rtv_group() throws Exception {
         long total = user_count;
         System.out.println(" -------- rtv_group(dcg)： -------- ");
-        createFile("rtv_group2", total);
+        createFile("rtv_group", total);
         int zoneId = 1;
 
         int count = 0;
@@ -211,7 +212,7 @@ public class BigDataGeneratorUser {
         for (; zoneId <= zone_count; zoneId++) {
             long start_id = (zoneId << 16) + 0;
             long cur_id = start_id;
-            for (; cur_id <= (start_id + 32765); cur_id++) { //32767
+            for (; cur_id <= (start_id + 8100); cur_id++) { //8191
                 String sql = "(" + cur_id + ", 1, " + cur_id + ", 'temp', '2020-07-08 18:00:00', 1, 0, 1, 1, 1, " + zoneId + ", 0, NULL, '', 1, NULL, 3),";
                 ++count;
                 /*if (count >= total) {
@@ -235,7 +236,7 @@ public class BigDataGeneratorUser {
             long start_id = large_zone ? large_id : small_id;
             long cur_id = start_id;
             for (; cur_id <= (start_id + 3000); cur_id++) {
-                String sql = "(" + cur_id + ", 1, 0, 'tg_" + cur_id + "', '2020-07-10 13:00:00', 1, 0, 0, 1, " + zoneId + ", 1, 0, NULL, '', 1, NULL, 3),";
+                String sql = "(" + cur_id + ", 1, 0, 'tg_" + cur_id + "', '2020-07-10 13:00:00', 1, 0, 0, 1, 1, " + zoneId + ", 0, NULL, '', 1, NULL, 3),";
                 ++count;
                 if (count >= total) {
                     sql = sql.substring(0, sql.length() - 1);
@@ -247,6 +248,8 @@ public class BigDataGeneratorUser {
             }
         }
 
+        //INSERT INTO `rtv_tmp`.`rtv_group2`(`id`, `group_ts`, `owner_id`, `group_name`, `create_date`, `corp_id`, `rank`, `dcg`, `preconfig`, `status`, `zone_id`, `console_dtg`, `admin_id`, `ext_tgid`, `parent_type`, `parent_id`, `priority`) VALUES
+        // (1, 0, 0, '', '1900-01-01 00:00:00', 0, 0, 0, 0, 1, 1, 0, 0, '', NULL, 0, 3);
 
         //INSERT INTO `rtvitrunk`.`rtv_user`(`id`, `display_name`, `user_password`, `client_version`, `device`, `img_url`, `phone`, `register_date`, `last_logon_date`, `last_access_date`, `last_logon_ip`, `logon_state`, `salt`, `ts_profile`, `ts_group`, `rank`, `admin_id`, `dcg_id`, `corp_id`, `logon_name`, `priority`, `status`, `preconfig`, `default_grp`, `gps_report`, `gps_interval`, `adm_ts`, `zone_id`, `ats`, `pts`, `imei`, `lmr_uid`, `ext_did`, `extension_property`, `code`, `unit_id`, `department_id`, `original_name`, `unit_fk_id`, `department_fk_id`, `iccid`, `logon_type`, `last_update_time`, `joinlinkage`, `role_id`, `nfc`, `ext`, `create_way`, `user_role_id`, `expire_date`, `abptype`, `hardware_bind_time`, `hardware_logo`, `current_name`) VALUES
         // (65537, '张文涛', 'dfeddeeadfe9', NULL, 'portable', NULL, '11900000001', '2020-06-10 09:45:55', NULL, NULL, NULL, 'offline', 'ce7e970836ad6563', 3, 1, 0, 0, 65537, 1, '658032', 5, 1, 1, 0, 1, 30, 0, 1, 0, 0, 'imei123123', 65537, 'itrunk_65537', NULL, 'code_current_name_code', '3300000001', '3326004000', '张文涛', 1, 3, NULL, 0, '2020-07-07 15:27:56', NULL, 0, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, 'current_name123123');
