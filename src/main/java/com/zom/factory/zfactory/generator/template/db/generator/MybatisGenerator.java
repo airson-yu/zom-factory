@@ -22,8 +22,9 @@ public class MybatisGenerator {
                 "sta_user_tmpgroup_record","sta_user_video_record","sta_user_video_record_origin"};*/
         //String[] tables = {"rtv_version_dept_forbid_map"};
         //String[] tables = {"rtv_simple_dict"};
-        String[] tables = {"rtv_metro_bind"};
+        //String[] tables = {"rtv_metro_bind"};
         //String[] tables = {"rtv_feature_cfg","rtv_iccid_change_record"};
+        String[] tables = {"rtv_rhtx","rtv_rhtx_channel"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
