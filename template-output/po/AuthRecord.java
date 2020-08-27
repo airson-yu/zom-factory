@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 
- * @time 2020-08-27 17:48:28
+ * @time 2020-08-27 18:09:25
  */
 @Data
 public class AuthRecord {

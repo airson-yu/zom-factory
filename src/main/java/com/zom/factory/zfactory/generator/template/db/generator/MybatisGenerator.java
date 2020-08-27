@@ -24,7 +24,8 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_simple_dict"};
         //String[] tables = {"rtv_metro_bind"};
         //String[] tables = {"rtv_feature_cfg","rtv_iccid_change_record"};
-        String[] tables = {"rtv_auth_record","rtv_corp","rtv_device_type"};
+        //String[] tables = {"rtv_rhtx","rtv_rhtx_channel"};
+        String[] tables = {"rtv_auth_record", "rtv_corp", "rtv_device_type"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
