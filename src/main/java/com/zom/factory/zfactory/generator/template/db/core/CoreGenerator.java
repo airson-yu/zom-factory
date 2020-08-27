@@ -40,16 +40,24 @@ public class CoreGenerator {
         File file3 = new File(Cfg.output_dir_dao);
         File file4 = new File(Cfg.output_dir_service);
         for (File f : file1.listFiles()) {
-            f.delete();
+            if (null != f) {
+                f.delete();
+            }
         }
         for (File f : file2.listFiles()) {
-            f.delete();
+            if (null != f) {
+                f.delete();
+            }
         }
         for (File f : file3.listFiles()) {
-            f.delete();
+            if (null != f) {
+                f.delete();
+            }
         }
         for (File f : file4.listFiles()) {
-            f.delete();
+            if (null != f) {
+                f.delete();
+            }
         }
 
         System.out.println("\n提示： ----------------------------------------开始生成文件----------------------------------------\n");
