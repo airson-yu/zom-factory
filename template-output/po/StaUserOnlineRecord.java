@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 用户在线时长计算表(base on logon_record)
- * @time 2020-09-17 18:51:39
+ * @time 2020-09-18 13:57:23
  */
 @Data
 public class StaUserOnlineRecord {
