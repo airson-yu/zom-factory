@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 用户里程数记录表
- * @time 2020-09-18 13:57:23
+ * @time 2020-09-21 10:28:47
  */
 @Data
 public class StaUserMileageRecord {

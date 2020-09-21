@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.StaOriginalLogMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-18 13:57:23 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-21 10:28:47 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">sta_original_log</sql>
@@ -84,7 +84,7 @@
 		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="content != null">#{content,jdbcType=VARCHAR},</if></trim>
 	</insert>
 
-	<insert id="insertBatch">
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO <include refid="table"/>(content)
 		VALUES <foreach collection="list" item="c" separator=",">(#{c.content,jdbcType=VARCHAR})</foreach>
 	</insert>

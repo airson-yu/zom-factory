@@ -84,7 +84,7 @@
 		<trim prefix="values (" suffix=")" suffixOverrides=","><#list xmlColumnsMapList as cMap><#if cMap.fieldName != "id"><if test="${cMap.fieldHumpName} != null">${r'#'}{${cMap.fieldHumpName},jdbcType=${cMap.columnType}},</if></#if></#list></trim>
 	</insert>
 
-	<insert id="insertBatch">
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO <include refid="table"/>(<#list xmlColumnsMapList as cMap><#if cMap.fieldName !='id'>${cMap.fieldName}<#if cMap_has_next>,</#if></#if></#list>)
 		VALUES <foreach collection="list" item="c" separator=",">(<#list xmlColumnsMapList as cMap><#if cMap.fieldName !='id'>${r'#'}{c.${cMap.fieldHumpName},jdbcType=${cMap.columnType}}<#if cMap_has_next>,</#if></#if></#list>)</foreach>
 	</insert>

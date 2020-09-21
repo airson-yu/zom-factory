@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.StaParsePositionMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-18 13:57:23 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-21 10:28:47 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">sta_parse_position</sql>
@@ -84,7 +84,7 @@
 		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="tableName != null">#{tableName,jdbcType=VARCHAR},</if><if test="lastPkId != null">#{lastPkId,jdbcType=BIGINT},</if><if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if></trim>
 	</insert>
 
-	<insert id="insertBatch">
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO <include refid="table"/>(table_name,last_pk_id,update_time)
 		VALUES <foreach collection="list" item="c" separator=",">(#{c.tableName,jdbcType=VARCHAR},#{c.lastPkId,jdbcType=BIGINT},#{c.updateTime,jdbcType=TIMESTAMP})</foreach>
 	</insert>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.StaUserMileageRecordMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-18 13:57:23 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-21 10:28:47 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">sta_user_mileage_record</sql>
@@ -84,7 +84,7 @@
 		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="corpid != null">#{corpid,jdbcType=INTEGER},</if><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="name != null">#{name,jdbcType=VARCHAR},</if><if test="timeYm != null">#{timeYm,jdbcType=INTEGER},</if><if test="timeYmd != null">#{timeYmd,jdbcType=INTEGER},</if><if test="timeYmdh != null">#{timeYmdh,jdbcType=INTEGER},</if><if test="deptUniqueId != null">#{deptUniqueId,jdbcType=VARCHAR},</if><if test="deptName != null">#{deptName,jdbcType=VARCHAR},</if><if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if><if test="mileage != null">#{mileage,jdbcType=INTEGER},</if><if test="session != null">#{session,jdbcType=VARCHAR},</if><if test="state != null">#{state,jdbcType=INTEGER},</if></trim>
 	</insert>
 
-	<insert id="insertBatch">
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO <include refid="table"/>(corpid,uid,name,time_ym,time_ymd,time_ymdh,dept_unique_id,dept_name,start_time,mileage,session,state)
 		VALUES <foreach collection="list" item="c" separator=",">(#{c.corpid,jdbcType=INTEGER},#{c.uid,jdbcType=BIGINT},#{c.name,jdbcType=VARCHAR},#{c.timeYm,jdbcType=INTEGER},#{c.timeYmd,jdbcType=INTEGER},#{c.timeYmdh,jdbcType=INTEGER},#{c.deptUniqueId,jdbcType=VARCHAR},#{c.deptName,jdbcType=VARCHAR},#{c.startTime,jdbcType=TIMESTAMP},#{c.mileage,jdbcType=INTEGER},#{c.session,jdbcType=VARCHAR},#{c.state,jdbcType=INTEGER})</foreach>
 	</insert>

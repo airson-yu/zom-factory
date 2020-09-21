@@ -11,7 +11,7 @@ import java.util.Map;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 一键告警记录表
- * @time 2020-09-18 13:57:23
+ * @time 2020-09-21 10:28:48
  */
 public interface StaUserSosRecordMapper {
 
