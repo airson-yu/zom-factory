@@ -30,4 +30,8 @@ public class MybatisGenerator {
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
+    /**
+     * TODO: keywords quote: `real`, `status`, start, order, rank, group, value, show, force,
+     */
+
 }
