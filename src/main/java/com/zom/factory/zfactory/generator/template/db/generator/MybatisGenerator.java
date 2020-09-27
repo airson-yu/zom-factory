@@ -16,10 +16,10 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_app_black_list", "rtv_app_white_list", "rtv_illegal_app_record", "rtv_user_phone_record", "rtv_user_sms_record"};
         //String[] tables = {"tech_article", "tech_category", "tech_group", "tech_im", "tech_login_log", "tech_user"};
         //String[] tables = {"third_icc_t_alarm", "third_icc_t_alarm_feedback", "third_icc_t_alarm_process"};
-        String[] tables = {"sta_day_dept", "sta_day_user", "sta_original_log", "sta_parse_position", "sta_user_audio_record",
+        /*String[] tables = {"sta_day_dept", "sta_day_user", "sta_original_log", "sta_parse_position", "sta_user_audio_record",
                 "sta_user_audio_record_origin", "sta_user_im_record", "sta_user_logon_record_origin", "sta_user_mileage_record",
                 "sta_user_online_record", "sta_user_photo_record", "sta_user_sos_record", "sta_user_sos_record_origin",
-                "sta_user_tmpgroup_record","sta_user_video_record","sta_user_video_record_origin"};
+                "sta_user_tmpgroup_record","sta_user_video_record","sta_user_video_record_origin"};*/
         //String[] tables = {"rtv_version_dept_forbid_map"};
         //String[] tables = {"rtv_simple_dict"};
         //String[] tables = {"rtv_metro_bind"};
@@ -27,6 +27,7 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_rhtx","rtv_rhtx_channel"};
         //String[] tables = {"rtv_auth_record", "rtv_corp", "rtv_device_type"};
         //String[] tables = {"rtv_camera_device_info", "rtv_camera_group"};
+        String[] tables = {"rtv_console_view_camera_group"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
