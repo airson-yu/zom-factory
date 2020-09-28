@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import com.zom.factory.zfactory.generator.template.db.generator.Cfg;
 
+import com.zom.factory.zfactory.generator.template.db.tools.MysqlKeywords;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -243,7 +244,9 @@ public class CoreGenerator {
             }
 
             xmlColumnMap.put("columnType", colType);//数据库字段类型
-            xmlColumnMap.put("fieldName", fieldName);//包含下划线
+            //xmlColumnMap.put("fieldName", fieldName);//包含下划线
+            xmlColumnMap.put("fieldName", getSafeFieldName(fieldName));//包含下划线
+            xmlColumnMap.put("fieldAsName", getSafeFieldName(fieldHumpName));
             xmlColumnMap.put("fieldHumpName", fieldHumpName);
             xmlColumnMap.put("fieldNameFirstUp", fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1).toLowerCase());
             xmlColumnMap.put("fieldHumpNameFirstUp", fieldHumpName.substring(0, 1).toUpperCase() + fieldHumpName.substring(1));
@@ -303,6 +306,13 @@ public class CoreGenerator {
             }
         }
         map.put("poColumnsMapList", poColumnsMapList);
+    }
+
+    public static String getSafeFieldName(String fieldName) {
+        if (MysqlKeywords.KEYWORDS_SET.contains(fieldName.toLowerCase())) {
+            return "`" + fieldName + "`";
+        }
+        return fieldName;
     }
 
     /**

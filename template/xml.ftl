@@ -7,7 +7,7 @@
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">${table}</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns"><#list xmlColumnsMapList as cMap>A.${cMap.fieldName} AS ${cMap.fieldHumpName}<#if cMap_has_next>,</#if></#list></sql>
+    <sql id="baseColumns"><#list xmlColumnsMapList as cMap>A.${cMap.fieldName} AS ${cMap.fieldAsName}<#if cMap_has_next>,</#if></#list></sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${r'$'}{groupBy,jdbcType=VARCHAR} </if>

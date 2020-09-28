@@ -27,12 +27,9 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_rhtx","rtv_rhtx_channel"};
         //String[] tables = {"rtv_auth_record", "rtv_corp", "rtv_device_type"};
         //String[] tables = {"rtv_camera_device_info", "rtv_camera_group"};
-        String[] tables = {"rtv_console_view_camera_group"};
+        //String[] tables = {"rtv_console_view_camera_group"};
+        String[] tables = {"rtv_corp"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
-
-    /**
-     * TODO: keywords quote: `real`, `status`, start, order, rank, group, value, show, force,
-     */
 
 }
