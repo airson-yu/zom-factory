@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zom.common.dao.mapper.CameraDeviceInfoMapper">
+
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-30 15:00:59 -->
+
+	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
+	<sql id="table">rtv_camera_device_info</sql>
+	<!-- 所有基础字段 -->
+    <sql id="baseColumns">A.id AS id,A.deviceid AS deviceid,A.cid AS cid,A.`code` AS `code`,A.`name` AS `name`,A.deviceGroupCode AS deviceGroupCode,A.parentCode AS parentCode,A.domaincode AS domaincode,A.deviceModelType AS deviceModelType,A.parentConnectCode AS parentConnectCode,A.vendorType AS vendorType,A.deviceFormType AS deviceFormType,A.cameraType AS cameraType,A.cameraLocation AS cameraLocation,A.`status` AS `status`,A.netType AS netType,A.isSupportIntelligent AS isSupportIntelligent,A.nvrCode AS nvrCode,A.isExDomain AS isExDomain,A.updatetime AS updatetime,A.deviceCreateTime AS deviceCreateTime,A.deviceIp AS deviceIp,A.longitude AS longitude,A.latitude AS latitude,A.height AS height,A.corpId AS corpId,A.remark AS remark,A.reserve AS reserve</sql>
+	<!-- 分组  -->
+	<sql id="groupBy">
+		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
+	</sql>
+	<!-- 排序  -->
+	<sql id="orderBy">
+		<if test="orderBy != null and orderBy !='' ">
+			<if test="selfOrder == null">ORDER BY A.${orderBy}</if>
+			<if test="selfOrder != null">ORDER BY ${orderBy}</if>
+		</if>
+		<if test="ascOrDesc != null and ascOrDesc !='' and selfOrder == null "> ${ascOrDesc}</if>
+		<if test="orderBy == null and ascOrDesc == null "> ORDER BY A.id DESC</if>
+	</sql>
+	<!-- 分页 -->
+	<sql id="limitCount">
+		<if test="count != null and count !='' "> LIMIT ${start},${count}</if>
+	</sql>
+	<!--====================================== 设置结束-CONFIG_FINISH ======================================-->
+
+
+	<!--=@@@@@@============================= 自定义内容 开始 _@CAUTION_SELF_BEGIN@_ =============================@@@@@@=-->
+	<sql id="joinColumns"></sql>
+	<sql id="baseSearch"></sql>
+	<sql id="joinSearch"></sql>
+	<sql id="leftJoin"></sql>
+	<!--=@@@@@@============================= 自定义内容 结束 _@CAUTION_SELF_FINISH@_ =============================@@@@@@=-->
+
+
+	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.CameraDeviceInfo">
+		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.CameraDeviceInfo">
+		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.CameraDeviceInfo">
+    	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
+	</select>
+
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.CameraDeviceInfo">
+    	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
+	</select>
+
+	<select id="selectCountByCondition" parameterType="java.util.Map" resultType="long">
+		SELECT COUNT(*) FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where>
+	</select>
+	<!--====================================== 查询结束-SELECT_FINISH ======================================-->
+
+	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
+	<!-- <-#-if cMap_has_next>,</-#-if> -->
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.CameraDeviceInfo">
+	    UPDATE <include refid="table"/>
+		<set>deviceid = #{deviceid,jdbcType=VARCHAR},cid = #{cid,jdbcType=VARCHAR},`code` = #{code,jdbcType=VARCHAR},`name` = #{name,jdbcType=VARCHAR},deviceGroupCode = #{deviceGroupCode,jdbcType=VARCHAR},parentCode = #{parentCode,jdbcType=VARCHAR},domaincode = #{domaincode,jdbcType=VARCHAR},deviceModelType = #{deviceModelType,jdbcType=VARCHAR},parentConnectCode = #{parentConnectCode,jdbcType=VARCHAR},vendorType = #{vendorType,jdbcType=VARCHAR},deviceFormType = #{deviceFormType,jdbcType=INTEGER},cameraType = #{cameraType,jdbcType=INTEGER},cameraLocation = #{cameraLocation,jdbcType=VARCHAR},`status` = #{status,jdbcType=INTEGER},netType = #{netType,jdbcType=INTEGER},isSupportIntelligent = #{isSupportIntelligent,jdbcType=INTEGER},nvrCode = #{nvrCode,jdbcType=VARCHAR},isExDomain = #{isExDomain,jdbcType=INTEGER},updatetime = #{updatetime,jdbcType=TIMESTAMP},deviceCreateTime = #{deviceCreateTime,jdbcType=TIMESTAMP},deviceIp = #{deviceIp,jdbcType=VARCHAR},longitude = #{longitude,jdbcType=FLOAT},latitude = #{latitude,jdbcType=FLOAT},height = #{height,jdbcType=FLOAT},corpId = #{corpId,jdbcType=INTEGER},remark = #{remark,jdbcType=VARCHAR},reserve = #{reserve,jdbcType=VARCHAR},</set>
+	    WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.CameraDeviceInfo">
+	    UPDATE <include refid="table"/>
+		<set><if test="deviceid != null">deviceid = #{deviceid,jdbcType=VARCHAR},</if><if test="cid != null">cid = #{cid,jdbcType=VARCHAR},</if><if test="code != null">`code` = #{code,jdbcType=VARCHAR},</if><if test="name != null">`name` = #{name,jdbcType=VARCHAR},</if><if test="deviceGroupCode != null">deviceGroupCode = #{deviceGroupCode,jdbcType=VARCHAR},</if><if test="parentCode != null">parentCode = #{parentCode,jdbcType=VARCHAR},</if><if test="domaincode != null">domaincode = #{domaincode,jdbcType=VARCHAR},</if><if test="deviceModelType != null">deviceModelType = #{deviceModelType,jdbcType=VARCHAR},</if><if test="parentConnectCode != null">parentConnectCode = #{parentConnectCode,jdbcType=VARCHAR},</if><if test="vendorType != null">vendorType = #{vendorType,jdbcType=VARCHAR},</if><if test="deviceFormType != null">deviceFormType = #{deviceFormType,jdbcType=INTEGER},</if><if test="cameraType != null">cameraType = #{cameraType,jdbcType=INTEGER},</if><if test="cameraLocation != null">cameraLocation = #{cameraLocation,jdbcType=VARCHAR},</if><if test="status != null">`status` = #{status,jdbcType=INTEGER},</if><if test="netType != null">netType = #{netType,jdbcType=INTEGER},</if><if test="isSupportIntelligent != null">isSupportIntelligent = #{isSupportIntelligent,jdbcType=INTEGER},</if><if test="nvrCode != null">nvrCode = #{nvrCode,jdbcType=VARCHAR},</if><if test="isExDomain != null">isExDomain = #{isExDomain,jdbcType=INTEGER},</if><if test="updatetime != null">updatetime = #{updatetime,jdbcType=TIMESTAMP},</if><if test="deviceCreateTime != null">deviceCreateTime = #{deviceCreateTime,jdbcType=TIMESTAMP},</if><if test="deviceIp != null">deviceIp = #{deviceIp,jdbcType=VARCHAR},</if><if test="longitude != null">longitude = #{longitude,jdbcType=FLOAT},</if><if test="latitude != null">latitude = #{latitude,jdbcType=FLOAT},</if><if test="height != null">height = #{height,jdbcType=FLOAT},</if><if test="corpId != null">corpId = #{corpId,jdbcType=INTEGER},</if><if test="remark != null">remark = #{remark,jdbcType=VARCHAR},</if><if test="reserve != null">reserve = #{reserve,jdbcType=VARCHAR},</if></set>
+	    WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+    <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
+
+	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
+	<insert id="insert" parameterType="com.zom.common.dao.po.CameraDeviceInfo" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(deviceid,cid,`code`,`name`,deviceGroupCode,parentCode,domaincode,deviceModelType,parentConnectCode,vendorType,deviceFormType,cameraType,cameraLocation,`status`,netType,isSupportIntelligent,nvrCode,isExDomain,updatetime,deviceCreateTime,deviceIp,longitude,latitude,height,corpId,remark,reserve)
+	    VALUES( #{deviceid,jdbcType=VARCHAR},#{cid,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{deviceGroupCode,jdbcType=VARCHAR},#{parentCode,jdbcType=VARCHAR},#{domaincode,jdbcType=VARCHAR},#{deviceModelType,jdbcType=VARCHAR},#{parentConnectCode,jdbcType=VARCHAR},#{vendorType,jdbcType=VARCHAR},#{deviceFormType,jdbcType=INTEGER},#{cameraType,jdbcType=INTEGER},#{cameraLocation,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{netType,jdbcType=INTEGER},#{isSupportIntelligent,jdbcType=INTEGER},#{nvrCode,jdbcType=VARCHAR},#{isExDomain,jdbcType=INTEGER},#{updatetime,jdbcType=TIMESTAMP},#{deviceCreateTime,jdbcType=TIMESTAMP},#{deviceIp,jdbcType=VARCHAR},#{longitude,jdbcType=FLOAT},#{latitude,jdbcType=FLOAT},#{height,jdbcType=FLOAT},#{corpId,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{reserve,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.CameraDeviceInfo" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="deviceid != null"> deviceid,</if><if test="cid != null"> cid,</if><if test="code != null"> `code`,</if><if test="name != null"> `name`,</if><if test="deviceGroupCode != null"> deviceGroupCode,</if><if test="parentCode != null"> parentCode,</if><if test="domaincode != null"> domaincode,</if><if test="deviceModelType != null"> deviceModelType,</if><if test="parentConnectCode != null"> parentConnectCode,</if><if test="vendorType != null"> vendorType,</if><if test="deviceFormType != null"> deviceFormType,</if><if test="cameraType != null"> cameraType,</if><if test="cameraLocation != null"> cameraLocation,</if><if test="status != null"> `status`,</if><if test="netType != null"> netType,</if><if test="isSupportIntelligent != null"> isSupportIntelligent,</if><if test="nvrCode != null"> nvrCode,</if><if test="isExDomain != null"> isExDomain,</if><if test="updatetime != null"> updatetime,</if><if test="deviceCreateTime != null"> deviceCreateTime,</if><if test="deviceIp != null"> deviceIp,</if><if test="longitude != null"> longitude,</if><if test="latitude != null"> latitude,</if><if test="height != null"> height,</if><if test="corpId != null"> corpId,</if><if test="remark != null"> remark,</if><if test="reserve != null"> reserve,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="deviceid != null">#{deviceid,jdbcType=VARCHAR},</if><if test="cid != null">#{cid,jdbcType=VARCHAR},</if><if test="code != null">#{code,jdbcType=VARCHAR},</if><if test="name != null">#{name,jdbcType=VARCHAR},</if><if test="deviceGroupCode != null">#{deviceGroupCode,jdbcType=VARCHAR},</if><if test="parentCode != null">#{parentCode,jdbcType=VARCHAR},</if><if test="domaincode != null">#{domaincode,jdbcType=VARCHAR},</if><if test="deviceModelType != null">#{deviceModelType,jdbcType=VARCHAR},</if><if test="parentConnectCode != null">#{parentConnectCode,jdbcType=VARCHAR},</if><if test="vendorType != null">#{vendorType,jdbcType=VARCHAR},</if><if test="deviceFormType != null">#{deviceFormType,jdbcType=INTEGER},</if><if test="cameraType != null">#{cameraType,jdbcType=INTEGER},</if><if test="cameraLocation != null">#{cameraLocation,jdbcType=VARCHAR},</if><if test="status != null">#{status,jdbcType=INTEGER},</if><if test="netType != null">#{netType,jdbcType=INTEGER},</if><if test="isSupportIntelligent != null">#{isSupportIntelligent,jdbcType=INTEGER},</if><if test="nvrCode != null">#{nvrCode,jdbcType=VARCHAR},</if><if test="isExDomain != null">#{isExDomain,jdbcType=INTEGER},</if><if test="updatetime != null">#{updatetime,jdbcType=TIMESTAMP},</if><if test="deviceCreateTime != null">#{deviceCreateTime,jdbcType=TIMESTAMP},</if><if test="deviceIp != null">#{deviceIp,jdbcType=VARCHAR},</if><if test="longitude != null">#{longitude,jdbcType=FLOAT},</if><if test="latitude != null">#{latitude,jdbcType=FLOAT},</if><if test="height != null">#{height,jdbcType=FLOAT},</if><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="remark != null">#{remark,jdbcType=VARCHAR},</if><if test="reserve != null">#{reserve,jdbcType=VARCHAR},</if></trim>
+	</insert>
+
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="table"/>(deviceid,cid,`code`,`name`,deviceGroupCode,parentCode,domaincode,deviceModelType,parentConnectCode,vendorType,deviceFormType,cameraType,cameraLocation,`status`,netType,isSupportIntelligent,nvrCode,isExDomain,updatetime,deviceCreateTime,deviceIp,longitude,latitude,height,corpId,remark,reserve)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.deviceid,jdbcType=VARCHAR},#{c.cid,jdbcType=VARCHAR},#{c.code,jdbcType=VARCHAR},#{c.name,jdbcType=VARCHAR},#{c.deviceGroupCode,jdbcType=VARCHAR},#{c.parentCode,jdbcType=VARCHAR},#{c.domaincode,jdbcType=VARCHAR},#{c.deviceModelType,jdbcType=VARCHAR},#{c.parentConnectCode,jdbcType=VARCHAR},#{c.vendorType,jdbcType=VARCHAR},#{c.deviceFormType,jdbcType=INTEGER},#{c.cameraType,jdbcType=INTEGER},#{c.cameraLocation,jdbcType=VARCHAR},#{c.status,jdbcType=INTEGER},#{c.netType,jdbcType=INTEGER},#{c.isSupportIntelligent,jdbcType=INTEGER},#{c.nvrCode,jdbcType=VARCHAR},#{c.isExDomain,jdbcType=INTEGER},#{c.updatetime,jdbcType=TIMESTAMP},#{c.deviceCreateTime,jdbcType=TIMESTAMP},#{c.deviceIp,jdbcType=VARCHAR},#{c.longitude,jdbcType=FLOAT},#{c.latitude,jdbcType=FLOAT},#{c.height,jdbcType=FLOAT},#{c.corpId,jdbcType=INTEGER},#{c.remark,jdbcType=VARCHAR},#{c.reserve,jdbcType=VARCHAR})</foreach>
+	</insert>
+  	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
+
+	<!--====================================== 删除开始-DELETE_BEGIN ======================================-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+	    DELETE FROM <include refid="table"/> WHERE id = #{id,jdbcType=BIGINT}
+	</delete>
+	<!--====================================== 删除结束-DELETE_FINISH ======================================-->
+
+</mapper>
