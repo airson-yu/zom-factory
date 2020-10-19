@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 摄像机组节点表
- * @time 2020-09-30 15:00:59
+ * @time 2020-10-19 13:46:11
  */
 @Data
 public class CameraGroup {
@@ -57,6 +57,21 @@ public class CameraGroup {
 	 * 
 	 */
 	private Integer corpId;
+	
+	/**
+	 * 
+	 */
+	private Integer state;
+	
+	/**
+	 * 下级链节点摄像头总数
+	 */
+	private Integer camCount;
+	
+	/**
+	 * 下级链节点摄像头在线总数
+	 */
+	private Integer camOnlineCount;
 	
 	
 	

@@ -11,7 +11,7 @@ import java.util.Map;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 摄像机设备信息表
- * @time 2020-09-30 15:00:59
+ * @time 2020-10-19 13:46:11
  */
 public interface CameraDeviceInfoMapper {
 

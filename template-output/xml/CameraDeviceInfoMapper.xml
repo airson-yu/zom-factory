@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.CameraDeviceInfoMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-09-30 15:00:59 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-10-19 13:46:10 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">rtv_camera_device_info</sql>
