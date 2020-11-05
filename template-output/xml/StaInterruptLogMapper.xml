@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zom.common.dao.mapper.StaInterruptLogMapper">
+
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-11-05 10:49:50 -->
+
+	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
+	<sql id="table">sta_interrupt_log</sql>
+	<!-- 所有基础字段 -->
+    <sql id="baseColumns">A.id AS id,A.sub_id AS subId,A.uid AS uid,A.uname AS uname,A.dept_id AS deptId,A.dept_name AS deptName,A.busi_id AS busiId,A.busi_type AS busiType,A.im_type AS imType,A.flag AS flag,A.`real` AS `real`,A.target_id AS targetId,A.target_name AS targetName,A.start_time AS startTime,A.end_time AS endTime,A.oper_uid AS operUid,A.oper_username AS operUsername,A.interrupt_type AS interruptType,A.`session` AS `session`,A.create_time AS createTime,A.exp1 AS exp1,A.exp2 AS exp2,A.exp3 AS exp3</sql>
+	<!-- 分组  -->
+	<sql id="groupBy">
+		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
+	</sql>
+	<!-- 排序  -->
+	<sql id="orderBy">
+		<if test="orderBy != null and orderBy !='' ">
+			<if test="selfOrder == null">ORDER BY A.${orderBy}</if>
+			<if test="selfOrder != null">ORDER BY ${orderBy}</if>
+		</if>
+		<if test="ascOrDesc != null and ascOrDesc !='' and selfOrder == null "> ${ascOrDesc}</if>
+		<if test="orderBy == null and ascOrDesc == null "> ORDER BY A.id DESC</if>
+	</sql>
+	<!-- 分页 -->
+	<sql id="limitCount">
+		<if test="count != null and count !='' "> LIMIT ${start},${count}</if>
+	</sql>
+	<!--====================================== 设置结束-CONFIG_FINISH ======================================-->
+
+
+	<!--=@@@@@@============================= 自定义内容 开始 _@CAUTION_SELF_BEGIN@_ =============================@@@@@@=-->
+	<sql id="joinColumns"></sql>
+	<sql id="baseSearch"></sql>
+	<sql id="joinSearch"></sql>
+	<sql id="leftJoin"></sql>
+	<!--=@@@@@@============================= 自定义内容 结束 _@CAUTION_SELF_FINISH@_ =============================@@@@@@=-->
+
+
+	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaInterruptLog">
+		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaInterruptLog">
+		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaInterruptLog">
+    	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
+	</select>
+
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaInterruptLog">
+    	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
+	</select>
+
+	<select id="selectCountByCondition" parameterType="java.util.Map" resultType="long">
+		SELECT COUNT(*) FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where>
+	</select>
+	<!--====================================== 查询结束-SELECT_FINISH ======================================-->
+
+	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
+	<!-- <-#-if cMap_has_next>,</-#-if> -->
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.StaInterruptLog">
+	    UPDATE <include refid="table"/>
+		<set>sub_id = #{subId,jdbcType=BIGINT},uid = #{uid,jdbcType=BIGINT},uname = #{uname,jdbcType=VARCHAR},dept_id = #{deptId,jdbcType=VARCHAR},dept_name = #{deptName,jdbcType=VARCHAR},busi_id = #{busiId,jdbcType=INTEGER},busi_type = #{busiType,jdbcType=INTEGER},im_type = #{imType,jdbcType=INTEGER},flag = #{flag,jdbcType=INTEGER},`real` = #{real,jdbcType=INTEGER},target_id = #{targetId,jdbcType=BIGINT},target_name = #{targetName,jdbcType=VARCHAR},start_time = #{startTime,jdbcType=VARCHAR},end_time = #{endTime,jdbcType=VARCHAR},oper_uid = #{operUid,jdbcType=BIGINT},oper_username = #{operUsername,jdbcType=VARCHAR},interrupt_type = #{interruptType,jdbcType=INTEGER},`session` = #{session,jdbcType=VARCHAR},create_time = #{createTime,jdbcType=VARCHAR},exp1 = #{exp1,jdbcType=VARCHAR},exp2 = #{exp2,jdbcType=VARCHAR},exp3 = #{exp3,jdbcType=VARCHAR},</set>
+	    WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.StaInterruptLog">
+	    UPDATE <include refid="table"/>
+		<set><if test="subId != null">sub_id = #{subId,jdbcType=BIGINT},</if><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="uname != null">uname = #{uname,jdbcType=VARCHAR},</if><if test="deptId != null">dept_id = #{deptId,jdbcType=VARCHAR},</if><if test="deptName != null">dept_name = #{deptName,jdbcType=VARCHAR},</if><if test="busiId != null">busi_id = #{busiId,jdbcType=INTEGER},</if><if test="busiType != null">busi_type = #{busiType,jdbcType=INTEGER},</if><if test="imType != null">im_type = #{imType,jdbcType=INTEGER},</if><if test="flag != null">flag = #{flag,jdbcType=INTEGER},</if><if test="real != null">`real` = #{real,jdbcType=INTEGER},</if><if test="targetId != null">target_id = #{targetId,jdbcType=BIGINT},</if><if test="targetName != null">target_name = #{targetName,jdbcType=VARCHAR},</if><if test="startTime != null">start_time = #{startTime,jdbcType=VARCHAR},</if><if test="endTime != null">end_time = #{endTime,jdbcType=VARCHAR},</if><if test="operUid != null">oper_uid = #{operUid,jdbcType=BIGINT},</if><if test="operUsername != null">oper_username = #{operUsername,jdbcType=VARCHAR},</if><if test="interruptType != null">interrupt_type = #{interruptType,jdbcType=INTEGER},</if><if test="session != null">`session` = #{session,jdbcType=VARCHAR},</if><if test="createTime != null">create_time = #{createTime,jdbcType=VARCHAR},</if><if test="exp1 != null">exp1 = #{exp1,jdbcType=VARCHAR},</if><if test="exp2 != null">exp2 = #{exp2,jdbcType=VARCHAR},</if><if test="exp3 != null">exp3 = #{exp3,jdbcType=VARCHAR},</if></set>
+	    WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+    <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
+
+	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
+	<insert id="insert" parameterType="com.zom.common.dao.po.StaInterruptLog" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(sub_id,uid,uname,dept_id,dept_name,busi_id,busi_type,im_type,flag,`real`,target_id,target_name,start_time,end_time,oper_uid,oper_username,interrupt_type,`session`,create_time,exp1,exp2,exp3)
+	    VALUES( #{subId,jdbcType=BIGINT},#{uid,jdbcType=BIGINT},#{uname,jdbcType=VARCHAR},#{deptId,jdbcType=VARCHAR},#{deptName,jdbcType=VARCHAR},#{busiId,jdbcType=INTEGER},#{busiType,jdbcType=INTEGER},#{imType,jdbcType=INTEGER},#{flag,jdbcType=INTEGER},#{real,jdbcType=INTEGER},#{targetId,jdbcType=BIGINT},#{targetName,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{operUid,jdbcType=BIGINT},#{operUsername,jdbcType=VARCHAR},#{interruptType,jdbcType=INTEGER},#{session,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{exp1,jdbcType=VARCHAR},#{exp2,jdbcType=VARCHAR},#{exp3,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.StaInterruptLog" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="subId != null"> sub_id,</if><if test="uid != null"> uid,</if><if test="uname != null"> uname,</if><if test="deptId != null"> dept_id,</if><if test="deptName != null"> dept_name,</if><if test="busiId != null"> busi_id,</if><if test="busiType != null"> busi_type,</if><if test="imType != null"> im_type,</if><if test="flag != null"> flag,</if><if test="real != null"> `real`,</if><if test="targetId != null"> target_id,</if><if test="targetName != null"> target_name,</if><if test="startTime != null"> start_time,</if><if test="endTime != null"> end_time,</if><if test="operUid != null"> oper_uid,</if><if test="operUsername != null"> oper_username,</if><if test="interruptType != null"> interrupt_type,</if><if test="session != null"> `session`,</if><if test="createTime != null"> create_time,</if><if test="exp1 != null"> exp1,</if><if test="exp2 != null"> exp2,</if><if test="exp3 != null"> exp3,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="subId != null">#{subId,jdbcType=BIGINT},</if><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="uname != null">#{uname,jdbcType=VARCHAR},</if><if test="deptId != null">#{deptId,jdbcType=VARCHAR},</if><if test="deptName != null">#{deptName,jdbcType=VARCHAR},</if><if test="busiId != null">#{busiId,jdbcType=INTEGER},</if><if test="busiType != null">#{busiType,jdbcType=INTEGER},</if><if test="imType != null">#{imType,jdbcType=INTEGER},</if><if test="flag != null">#{flag,jdbcType=INTEGER},</if><if test="real != null">#{real,jdbcType=INTEGER},</if><if test="targetId != null">#{targetId,jdbcType=BIGINT},</if><if test="targetName != null">#{targetName,jdbcType=VARCHAR},</if><if test="startTime != null">#{startTime,jdbcType=VARCHAR},</if><if test="endTime != null">#{endTime,jdbcType=VARCHAR},</if><if test="operUid != null">#{operUid,jdbcType=BIGINT},</if><if test="operUsername != null">#{operUsername,jdbcType=VARCHAR},</if><if test="interruptType != null">#{interruptType,jdbcType=INTEGER},</if><if test="session != null">#{session,jdbcType=VARCHAR},</if><if test="createTime != null">#{createTime,jdbcType=VARCHAR},</if><if test="exp1 != null">#{exp1,jdbcType=VARCHAR},</if><if test="exp2 != null">#{exp2,jdbcType=VARCHAR},</if><if test="exp3 != null">#{exp3,jdbcType=VARCHAR},</if></trim>
+	</insert>
+
+	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="table"/>(sub_id,uid,uname,dept_id,dept_name,busi_id,busi_type,im_type,flag,`real`,target_id,target_name,start_time,end_time,oper_uid,oper_username,interrupt_type,`session`,create_time,exp1,exp2,exp3)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.subId,jdbcType=BIGINT},#{c.uid,jdbcType=BIGINT},#{c.uname,jdbcType=VARCHAR},#{c.deptId,jdbcType=VARCHAR},#{c.deptName,jdbcType=VARCHAR},#{c.busiId,jdbcType=INTEGER},#{c.busiType,jdbcType=INTEGER},#{c.imType,jdbcType=INTEGER},#{c.flag,jdbcType=INTEGER},#{c.real,jdbcType=INTEGER},#{c.targetId,jdbcType=BIGINT},#{c.targetName,jdbcType=VARCHAR},#{c.startTime,jdbcType=VARCHAR},#{c.endTime,jdbcType=VARCHAR},#{c.operUid,jdbcType=BIGINT},#{c.operUsername,jdbcType=VARCHAR},#{c.interruptType,jdbcType=INTEGER},#{c.session,jdbcType=VARCHAR},#{c.createTime,jdbcType=VARCHAR},#{c.exp1,jdbcType=VARCHAR},#{c.exp2,jdbcType=VARCHAR},#{c.exp3,jdbcType=VARCHAR})</foreach>
+	</insert>
+  	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
+
+	<!--====================================== 删除开始-DELETE_BEGIN ======================================-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+	    DELETE FROM <include refid="table"/> WHERE id = #{id,jdbcType=BIGINT}
+	</delete>
+	<!--====================================== 删除结束-DELETE_FINISH ======================================-->
+
+</mapper>
