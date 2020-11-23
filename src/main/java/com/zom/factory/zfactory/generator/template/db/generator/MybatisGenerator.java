@@ -28,7 +28,7 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_auth_record", "rtv_corp", "rtv_device_type"};
         //String[] tables = {"rtv_camera_device_info", "rtv_camera_group"};
         //String[] tables = {"sta_interrupt_log","sta_ignore_dept"};
-        String[] tables = {"rtv_sms_gw_phone_mapping"};
+        String[] tables = {"rtv_sms_gw_phone_mapping", "rtv_console_bind_phone_map"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 

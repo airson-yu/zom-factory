@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: SmsGwPhoneMapping
+ * @description PO: ConsoleBindPhoneMap
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 短信网关状态表
+ * @remark 调度台与短信号码绑定表
  * @time 2020-11-23 16:26:00
  */
 @Data
-public class SmsGwPhoneMapping {
+public class ConsoleBindPhoneMap {
 
 	/**
 	 * 主键ID
@@ -23,7 +23,7 @@ public class SmsGwPhoneMapping {
 	private Long id;
 	
 	/**
-	 * 执行上报的UID
+	 * 调度台ID
 	 */
 	private Long uid;
 	
@@ -33,24 +33,9 @@ public class SmsGwPhoneMapping {
 	private Integer corpId;
 	
 	/**
-	 * 端口号
-	 */
-	private Integer port;
-	
-	/**
-	 * 端口对应的ICCID，通过此字段关联设备类型为sms_gw的user
-	 */
-	private String iccid;
-	
-	/**
-	 * 端口对应的电话号码
+	 * 绑定的电话号码，从rtv_phone中选取，rtv_phone变化时需同步更新
 	 */
 	private String phone;
-	
-	/**
-	 * 工作状态。1 正常， 2-不工作， 3-未插卡
-	 */
-	private Integer state;
 	
 	/**
 	 * 更新时间
