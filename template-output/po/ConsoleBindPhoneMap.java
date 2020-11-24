@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 调度台与短信号码绑定表
- * @time 2020-11-23 16:26:00
+ * @time 2020-11-24 10:05:05
  */
 @Data
 public class ConsoleBindPhoneMap {
@@ -36,6 +36,11 @@ public class ConsoleBindPhoneMap {
 	 * 绑定的电话号码，从rtv_phone中选取，rtv_phone变化时需同步更新
 	 */
 	private String phone;
+	
+	/**
+	 * 绑定的ICCID，从rtv_phone中选取，rtv_phone变化时需同步更新
+	 */
+	private String iccid;
 	
 	/**
 	 * 更新时间

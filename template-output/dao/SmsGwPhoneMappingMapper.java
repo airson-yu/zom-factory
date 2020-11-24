@@ -11,7 +11,7 @@ import java.util.Map;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 短信网关状态表
- * @time 2020-11-23 16:26:00
+ * @time 2020-11-24 10:05:05
  */
 public interface SmsGwPhoneMappingMapper {
 
