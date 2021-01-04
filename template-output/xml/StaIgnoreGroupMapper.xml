@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zom.common.dao.mapper.ConsoleBindPhoneMapMapper">
+<mapper namespace="com.zom.common.dao.mapper.StaIgnoreGroupMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2020-11-24 10:05:05 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2021-01-04 12:10:36 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
-	<sql id="table">rtv_console_bind_phone_map</sql>
+	<sql id="table">sta_ignore_group</sql>
 	<!-- 所有基础字段 -->
-    <sql id="baseColumns">A.id AS id,A.uid AS uid,A.corp_id AS corpId,A.phone AS phone,A.iccid AS iccid,A.update_time AS updateTime</sql>
+    <sql id="baseColumns">A.id AS id,A.uid AS uid,A.group_id AS groupId,A.state AS state</sql>
 	<!-- 分组  -->
 	<sql id="groupBy">
 		<if test="groupBy != null and groupBy !='' "> GROUP BY ${groupBy,jdbcType=VARCHAR} </if>
@@ -37,18 +37,18 @@
 
 
 	<!--====================================== 查询开始-SELECT_BEGIN ======================================-->
-	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<select id="load" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaIgnoreGroup">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.zom.common.dao.po.StaIgnoreGroup">
 		SELECT <include refid="baseColumns"/> FROM <include refid="table"/> A WHERE A.id = #{id,jdbcType=BIGINT}
 	</select>
 
-	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaIgnoreGroup">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> LIMIT 0,1
 	</select>
 
-	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<select id="selectListByCondition" parameterType="java.util.Map" resultType="com.zom.common.dao.po.StaIgnoreGroup">
     	SELECT <include refid="baseColumns"/> <include refid="joinColumns"/> FROM <include refid="table"/> A <include refid="leftJoin"/> <where> <include refid="baseSearch"/> <include refid="joinSearch"/> </where> <include refid="orderBy"/> <include refid="limitCount"/>
 	</select>
 
@@ -59,34 +59,34 @@
 
 	<!--====================================== 修改开始-UPDATE_BEGIN ======================================-->
 	<!-- <-#-if cMap_has_next>,</-#-if> -->
-	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<update id="updateByPrimaryKey" parameterType="com.zom.common.dao.po.StaIgnoreGroup">
 	    UPDATE <include refid="table"/>
-		<set>uid = #{uid,jdbcType=BIGINT},corp_id = #{corpId,jdbcType=INTEGER},phone = #{phone,jdbcType=VARCHAR},iccid = #{iccid,jdbcType=VARCHAR},update_time = #{updateTime,jdbcType=TIMESTAMP},</set>
+		<set>uid = #{uid,jdbcType=BIGINT},group_id = #{groupId,jdbcType=BIGINT},state = #{state,jdbcType=INTEGER},</set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.ConsoleBindPhoneMap">
+	<update id="updateByPrimaryKeySelective" parameterType="com.zom.common.dao.po.StaIgnoreGroup">
 	    UPDATE <include refid="table"/>
-		<set><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="corpId != null">corp_id = #{corpId,jdbcType=INTEGER},</if><if test="phone != null">phone = #{phone,jdbcType=VARCHAR},</if><if test="iccid != null">iccid = #{iccid,jdbcType=VARCHAR},</if><if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if></set>
+		<set><if test="uid != null">uid = #{uid,jdbcType=BIGINT},</if><if test="groupId != null">group_id = #{groupId,jdbcType=BIGINT},</if><if test="state != null">state = #{state,jdbcType=INTEGER},</if></set>
 	    WHERE id = #{id,jdbcType=BIGINT}
 	</update>
     <!--====================================== 修改结束-UPDATE_FINISH ======================================-->
 
 	<!--====================================== 新增开始-INSERT_BEGIN ======================================-->
-	<insert id="insert" parameterType="com.zom.common.dao.po.ConsoleBindPhoneMap" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO <include refid="table"/>(uid,corp_id,phone,iccid,update_time)
-	    VALUES( #{uid,jdbcType=BIGINT},#{corpId,jdbcType=INTEGER},#{phone,jdbcType=VARCHAR},#{iccid,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP})
+	<insert id="insert" parameterType="com.zom.common.dao.po.StaIgnoreGroup" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO <include refid="table"/>(uid,group_id,state)
+	    VALUES( #{uid,jdbcType=BIGINT},#{groupId,jdbcType=BIGINT},#{state,jdbcType=INTEGER})
 	</insert>
 
-	<insert id="insertSelective" parameterType="com.zom.common.dao.po.ConsoleBindPhoneMap" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertSelective" parameterType="com.zom.common.dao.po.StaIgnoreGroup" useGeneratedKeys="true" keyProperty="id">
 	    INSERT INTO <include refid="table"/>
-		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="uid != null"> uid,</if><if test="corpId != null"> corp_id,</if><if test="phone != null"> phone,</if><if test="iccid != null"> iccid,</if><if test="updateTime != null"> update_time,</if></trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="corpId != null">#{corpId,jdbcType=INTEGER},</if><if test="phone != null">#{phone,jdbcType=VARCHAR},</if><if test="iccid != null">#{iccid,jdbcType=VARCHAR},</if><if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if></trim>
+		<trim prefix="(" suffix=")" suffixOverrides=","> <if test="uid != null"> uid,</if><if test="groupId != null"> group_id,</if><if test="state != null"> state,</if></trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","><if test="uid != null">#{uid,jdbcType=BIGINT},</if><if test="groupId != null">#{groupId,jdbcType=BIGINT},</if><if test="state != null">#{state,jdbcType=INTEGER},</if></trim>
 	</insert>
 
 	<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO <include refid="table"/>(uid,corp_id,phone,iccid,update_time)
-		VALUES <foreach collection="list" item="c" separator=",">(#{c.uid,jdbcType=BIGINT},#{c.corpId,jdbcType=INTEGER},#{c.phone,jdbcType=VARCHAR},#{c.iccid,jdbcType=VARCHAR},#{c.updateTime,jdbcType=TIMESTAMP})</foreach>
+		INSERT INTO <include refid="table"/>(uid,group_id,state)
+		VALUES <foreach collection="list" item="c" separator=",">(#{c.uid,jdbcType=BIGINT},#{c.groupId,jdbcType=BIGINT},#{c.state,jdbcType=INTEGER})</foreach>
 	</insert>
   	<!--====================================== 新增结束-INSERT_FINISH ======================================-->
 

@@ -8,47 +8,47 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: SmsGwPhoneMapping
+ * @description PO: MetroLine
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 短信网关状态表
- * @time 2020-11-24 10:05:05
+ * @remark 地铁线路表
+ * @time 2021-01-04 12:10:36
  */
 @Data
-public class SmsGwPhoneMapping {
+public class MetroLine {
 
 	/**
-	 * 主键ID
+	 * 表项主键
 	 */
 	private Long id;
 	
 	/**
-	 * 执行上报的UID
-	 */
-	private Long uid;
-	
-	/**
 	 * 组织ID
 	 */
-	private Integer corpId;
+	private Integer corpid;
 	
 	/**
-	 * 端口号
+	 * 平台编号：CDDT, BJDT等
 	 */
-	private Integer port;
+	private String platform;
 	
 	/**
-	 * 端口对应的ICCID，通过此字段关联设备类型为sms_gw的user
+	 * 平台名称：成都地铁，北京地铁等
 	 */
-	private String iccid;
+	private String platformName;
 	
 	/**
-	 * 端口对应的电话号码
+	 * 线路编号：1，2，3，4等
 	 */
-	private String phone;
+	private String lineCode;
 	
 	/**
-	 * 工作状态。1 正常， 2-不工作， 3-未插卡
+	 * 线路名称：一号线，二号线等
+	 */
+	private String lineName;
+	
+	/**
+	 * 状态：1启用，2停用
 	 */
 	private Integer state;
 	
