@@ -29,8 +29,9 @@ public class MybatisGenerator {
         //String[] tables = {"rtv_camera_device_info", "rtv_camera_group"};
         //String[] tables = {"sta_interrupt_log","sta_ignore_dept"};
         //String[] tables = {"rtv_sms_gw_phone_mapping", "rtv_console_bind_phone_map"};
-        String[] tables = {"rtv_metro_line", "rtv_metro_line_dept_map", "rtv_metro_line_group_map",
-                "sta_front_data", "sta_day_group", "sta_ignore_group"};
+        /*String[] tables = {"rtv_metro_line", "rtv_metro_line_dept_map", "rtv_metro_line_group_map",
+                "sta_front_data", "sta_day_group", "sta_ignore_group"};*/
+        String[] tables = {"rtv_3rdkey"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 
