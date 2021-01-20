@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 三方表
- * @time 2021-01-18 17:04:24
+ * @time 2021-01-20 11:39:17
  */
 @Data
 public class 3rdkey {
@@ -62,6 +62,11 @@ public class 3rdkey {
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date expireTime;
+	
+	/**
+	 * 时间戳有效分钟数，为0则始终有效（不安全）
+	 */
+	private Integer tsValidMinutes;
 	
 	/**
 	 * 状态，0停用，1启动，2删除
