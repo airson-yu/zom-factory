@@ -17,7 +17,6 @@ public class Table_rtv_beacon_location {
         String[] data = {
                 //`loc_name`, `tg_id`, `loc_mark`, `status`, `owner_id`, `role_id`, `corp_id`, `updirection`, `downdirection`, `updateTime`, `metroline`, `order`, `message`
                 //"位置名称,群组ID(主键ID),经度,纬度,部门ID,组织ID,上行,下行,线路,序号(非必填，默认为ID*100，无值就填NULL),语音(非必填，默认为空，无值就填NULL)",
-                "科学城,99227,30.391243,104.072328,1,1,0,180,1,NULL,NULL",
                 "科学城,99227,30.391243,104.072328,163,1,0,180,1,NULL,NULL",
                 "兴隆湖,99228,30.405196,104.076412,163,1,0,180,1,NULL,NULL",
                 "广州路,99229,30.419021,104.077269,163,1,0,180,1,NULL,NULL",

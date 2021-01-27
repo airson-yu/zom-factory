@@ -2,7 +2,7 @@ package com.zom.factory.script.sql;
 
 import org.springframework.util.StringUtils;
 
-public class Table_rtv_beacon {
+public class Table_Partly_rtv_beacon {
 
     public static void main(String[] args) {
         generateInsertSQL();
