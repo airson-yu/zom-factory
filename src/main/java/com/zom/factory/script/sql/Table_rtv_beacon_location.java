@@ -239,6 +239,10 @@ public class Table_rtv_beacon_location {
 
         //int roleid = 16;
 
+        /**
+         *  XXX XXX status默认为0，即位置未绑定信标，在导入信标的时候再手动更新位置的status为1
+         */
+
         String ts = "2021-01-27 17:54:00";
 
         for (String i : data) {
@@ -261,7 +265,7 @@ public class Table_rtv_beacon_location {
 
             String loc_json = "{\"loc_lat\":" + lat + ",\"loc_lon\":" + lon + "}";
 
-            sb.append("\n('" + name + "', " + tgid + ", '" + loc_json + "', 1, 0, " + roleId + ", " + corpId + ", " + up + ", " + down + ", '" + ts + "', '" + line + "', " + order + ", " + message + "),");
+            sb.append("\n('" + name + "', " + tgid + ", '" + loc_json + "', 0, 0, " + roleId + ", " + corpId + ", " + up + ", " + down + ", '" + ts + "', '" + line + "', " + order + ", " + message + "),");
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append(";");
