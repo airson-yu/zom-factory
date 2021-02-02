@@ -11,7 +11,7 @@ import java.util.Map;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 系统互联外系统基础配置表
- * @time 2021-02-01 12:10:25
+ * @time 2021-02-02 18:06:17
  */
 public interface ExternalSystemCfgMapper {
 

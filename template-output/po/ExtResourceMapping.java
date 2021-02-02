@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 外部系统资源映射表
- * @time 2021-02-01 12:10:25
+ * @time 2021-02-02 18:06:17
  */
 @Data
 public class ExtResourceMapping {
@@ -82,6 +82,16 @@ public class ExtResourceMapping {
 	 * 外部映射资源在警迅的部门主键ID
 	 */
 	private Long departmentFkId;
+	
+	/**
+	 * 状态，1：active, 2-delete
+	 */
+	private Integer state;
+	
+	/**
+	 * 被可见级别，1所有下级部门可见，2下级部门第一层管辖可见，3直管可见，4全局可见
+	 */
+	private Integer visibleLevel;
 	
 	
 	
