@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 外部系统资源映射表
- * @time 2021-02-02 18:06:17
+ * @time 2021-02-03 18:28:03
  */
 @Data
 public class ExtResourceMapping {
@@ -92,6 +92,16 @@ public class ExtResourceMapping {
 	 * 被可见级别，1所有下级部门可见，2下级部门第一层管辖可见，3直管可见，4全局可见
 	 */
 	private Integer visibleLevel;
+	
+	/**
+	 * 优先级
+	 */
+	private Integer priority;
+	
+	/**
+	 * 账号类型：1-终端账号，2-调度台账号，3-群组账号
+	 */
+	private Integer accountType;
 	
 	
 	
