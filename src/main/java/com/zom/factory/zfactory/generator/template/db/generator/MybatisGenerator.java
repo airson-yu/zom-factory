@@ -33,7 +33,7 @@ public class MybatisGenerator {
                 "sta_front_data", "sta_day_group", "sta_ignore_group"};*/
         //String[] tables = {"rtv_3rdkey"};
         //String[] tables = {"rtv_external_system_cfg", "rtv_ext_resource_mapping"};
-        String[] tables = {"rtv_auth_record"};
+        String[] tables = {"rtv_auth_record", "rtv_auth_bind"};
         CoreGenerator.produceAll(1, tables, true, true, true, false);
     }
 

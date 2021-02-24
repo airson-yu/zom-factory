@@ -8,14 +8,14 @@ import lombok.Data;
 
 /**
  * @author yuronghua-airson
- * @description PO: AuthRecord
+ * @description PO: AuthBind
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
- * @remark 
+ * @remark 服务器绑定的授权码表
  * @time 2021-02-24 18:18:02
  */
 @Data
-public class AuthRecord {
+public class AuthBind {
 
 	/**
 	 * 
@@ -28,9 +28,9 @@ public class AuthRecord {
 	private String authid;
 	
 	/**
-	 * 用户ID
+	 * 服务器绑定的授权码
 	 */
-	private Long uid;
+	private String serverAuthid;
 	
 	/**
 	 * 公司代号。警翼：737A6A79（szjy 的ASCII）
@@ -38,34 +38,9 @@ public class AuthRecord {
 	private String corpCode;
 	
 	/**
-	 * 硬件识别符类型
+	 * 用户ID
 	 */
-	private String hwidtype;
-	
-	/**
-	 * 具体的硬件识别号
-	 */
-	private String hwid;
-	
-	/**
-	 * 设备类型。如5v,G6,G7
-	 */
-	private String devicetype;
-	
-	/**
-	 * OS类型，目前只支持android
-	 */
-	private String ostype;
-	
-	/**
-	 * 应用类型，目前只支持djbmssdk
-	 */
-	private String apptype;
-	
-	/**
-	 * 虚拟授权硬件码的uuid
-	 */
-	private String uuid;
+	private Long uid;
 	
 	/**
 	 * 更新时间
