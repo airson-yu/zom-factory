@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 服务器绑定的授权码表
- * @time 2021-02-24 18:18:02
+ * @time 2021-02-25 17:11:12
  */
 @Data
 public class AuthBind {
@@ -38,9 +38,39 @@ public class AuthBind {
 	private String corpCode;
 	
 	/**
-	 * 用户ID
+	 * 在线用户ID 串，逗号分隔，最多允许同时两个终端登录，超量时才检查
 	 */
-	private Long uid;
+	private String onlineUids;
+	
+	/**
+	 * 硬件识别符类型
+	 */
+	private String hwidtype;
+	
+	/**
+	 * 具体的硬件识别号
+	 */
+	private String hwid;
+	
+	/**
+	 * 设备类型。如5v,G6,G7
+	 */
+	private String devicetype;
+	
+	/**
+	 * OS类型，目前只支持android
+	 */
+	private String ostype;
+	
+	/**
+	 * 应用类型，目前只支持djbmssdk
+	 */
+	private String apptype;
+	
+	/**
+	 * 虚拟授权硬件码的uuid
+	 */
+	private String uuid;
 	
 	/**
 	 * 更新时间
