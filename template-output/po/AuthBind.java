@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 服务器绑定的授权码表
- * @time 2021-02-25 17:11:12
+ * @time 2021-02-25 17:54:30
  */
 @Data
 public class AuthBind {
@@ -38,9 +38,14 @@ public class AuthBind {
 	private String corpCode;
 	
 	/**
-	 * 在线用户ID 串，逗号分隔，最多允许同时两个终端登录，超量时才检查
+	 * 在线用户1，最多允许同时两个终端登录，超量时才检查
 	 */
-	private String onlineUids;
+	private Long onlineUid1;
+	
+	/**
+	 * 在线用户2，最多允许同时两个终端登录，超量时才检查
+	 */
+	private Long onlineUid2;
 	
 	/**
 	 * 硬件识别符类型

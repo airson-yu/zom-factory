@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zom.common.dao.mapper.AuthRecordMapper">
 
-	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2021-02-25 17:11:12 -->
+	<!-- @author yuronghua-airson @template 2019.08.02 v11.0 @organization Zero One More, Inc. http://www.01more.com @time 2021-02-25 17:54:30 -->
 
 	<!--====================================== 设置开始-CONFIG_BEGIN ======================================-->
 	<sql id="table">rtv_auth_record</sql>
