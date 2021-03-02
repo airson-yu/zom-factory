@@ -11,7 +11,7 @@ import java.util.Map;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 
- * @time 2021-02-25 17:54:30
+ * @time 2021-03-02 10:10:32
  */
 public interface AuthRecordMapper {
 

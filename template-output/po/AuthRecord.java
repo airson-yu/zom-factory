@@ -12,7 +12,7 @@ import lombok.Data;
  * @template 2019.08.02 v11.0
  * @organization Zero One More, Inc. http://www.01more.com
  * @remark 
- * @time 2021-02-25 17:54:30
+ * @time 2021-03-02 10:10:32
  */
 @Data
 public class AuthRecord {
@@ -38,7 +38,7 @@ public class AuthRecord {
 	private String corpCode;
 	
 	/**
-	 * 硬件识别符类型
+	 * 硬件识别符类型:imei,virtual(虚拟硬件)
 	 */
 	private String hwidtype;
 	
@@ -61,11 +61,6 @@ public class AuthRecord {
 	 * 应用类型，目前只支持djbmssdk
 	 */
 	private String apptype;
-	
-	/**
-	 * 虚拟授权硬件码的uuid
-	 */
-	private String uuid;
 	
 	/**
 	 * 更新时间
