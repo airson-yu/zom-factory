@@ -31,15 +31,19 @@ public class BigDataGenerator {
     /**
      * sql脚本文件的存放目录
      */
-    private static final String output_dir = windows ? "E:\\zlab\\sql\\" : "/root/scripts_zom/sql/";    //"/var/scripts_zom/sql/"
-    private static final String file_dir   = windows ? "E:\\zlab\\file\\" : "/root/scripts_zom/file/";    //"/home/itcit/file/"
+    //private static final String output_dir = windows ? "E:\\zlab\\sql\\" : "/root/scripts_zom/sql/";    //"/var/scripts_zom/sql/"
+    //private static final String file_dir   = windows ? "E:\\zlab\\file\\" : "/root/scripts_zom/file/";    //"/home/itcit/file/"
+    private static final String output_dir = "/Users/airsonyu/Downloads/tmp/sql/";    //"/var/scripts_zom/sql/"
+    private static final String file_dir   = "/Users/airsonyu/Downloads/tmp/file/";    //"/home/itcit/file/"
     /**
      * 数据库配置
      */
     //private static final String	dbUrl		= windows ? "localhost" : "101.201.45.198";
-    private static final String dbname     = windows ? "zlab" : "rtvitrunk_test";
+    //private static final String dbname     = windows ? "zlab" : "rtvitrunk_test";
+    private static final String dbname     = windows ? "zlab" : "rtvitrunk";//rtv_tmp
     private static final String jdbc_user  = windows ? "root" : "root";
-    private static final String jdbc_pswd  = windows ? "root" : "Xyz@Itr132!";
+    //private static final String jdbc_pswd  = windows ? "root" : "Xyz@Itr132!";
+    private static final String jdbc_pswd  = windows ? "root" : "vfr47ujm";
 
     /** 默认值 : 数据的起始ID */
     //private static final long user_id_start = 65537;
@@ -65,9 +69,9 @@ public class BigDataGenerator {
     /**
      * 保存255个zone的数据，新增用户时从中取出用户ID值
      */
-    private static Map<Integer, ZoneIdAssign> zmap = new HashMap<Integer, ZoneIdAssign>();
+    private static Map<Integer, ZoneIdAssign> zmap = new HashMap<>();
 
-    private static Map<Long, CorpUser> corp_user_map = new HashMap<Long, CorpUser>();
+    private static Map<Long, CorpUser> corp_user_map = new HashMap<>();
 
     private static File       file1  = null;
     private static FileWriter w1     = null;
@@ -113,7 +117,7 @@ public class BigDataGenerator {
         rtv_zone();
         rtv_corp();
         rtv_system_param();
-        rtv_3rdkey();
+        //rtv_3rdkey();
         rtv_corp_zone_map();
         rtv_user();
 
@@ -121,7 +125,7 @@ public class BigDataGenerator {
 
         rtv_user_admin_mapping();
         rtv_console_cop_mapping();
-        rtv_bms_params();
+        //rtv_bms_params();
         rtv_token();
         rtv_group();
         rtv_group_dmr();
@@ -134,22 +138,25 @@ public class BigDataGenerator {
 		rtv_zone();//只缓存数据
 		rtv_user();//只缓存数据
 		*/
-        rtv_nvr();
-        rtv_external_camera();
-        rtv_fence();
+
         rtv_version_map();
         rtv_version_user_map();
+
+        /*rtv_nvr();
+        rtv_external_camera();
+        rtv_fence();
         rtv_plan_rule();
-        rtv_plan_rule_user_map();
+        rtv_plan_rule_user_map();*/
 
         //step
 		/*baseDataInsert = false;
 		rtv_zone();//只缓存数据
 		rtv_user();//只缓存数据
 		*/
-        rtv_rtpictures();
+
+        /*rtv_rtpictures();
         rtv_video();
-        rtv_gps_info();
+        rtv_gps_info();*/
 
 		/*String folder = file_dir + "rtpictures" + File.separator + "2017-10-26" + File.separator;
 		File file = new File(folder);
@@ -199,11 +206,13 @@ public class BigDataGenerator {
         }
         String sql;
         int id = 1;
+        int uid_start_gap = 1000;//0;
         while (id <= 255) {
             ZoneIdAssign zone = new ZoneIdAssign();
             zone.setMaxUid((long) ((id << 16) + 0x1FFF));
             zone.setMaxTgid((long) ((id << 16) + 0xFFFF));
-            zone.setCurUid((long) ((id << 16) + 1));
+            //zone.setCurUid((long) ((id << 16) + 1));
+            zone.setCurUid((long) ((id << 16) + 1) + uid_start_gap);
             zone.setCurTgid((long) ((id << 16) + 0x2000));
             zone.setName("zone" + id);
             zone.setNum(id);
@@ -224,6 +233,13 @@ public class BigDataGenerator {
 
     /**
      * 创建1000个公司， - 实际使用数为 : {corp_count}
+     * INSERT INTO `rtvitrunk`.`rtv_corp_table`(`id`, `username`, `corp_name`, `corp_password`, `email`, `phone`, `register_date`, `expire_date`, `last_logon_date`,
+     * `last_logon_ip`, `permission_level`, `priority_level`, `max_user`, `max_group`, `max_console`, `max_user_group`, `status`, `imeichk`, `sh_enable`, `asrecord`,
+     * `gps_report`, `gps_interval`, `imei_bind`, `door_control`, `catt_modle`, `video_push_num`, `params`, `note`,
+     * `expire_operation`, `expire_way`, `allow_modifi_iccid`, `allow_expire_update`)
+     * VALUES (2, 'corpuser', 'corpuser', 'e10adc3949ba59abbe56e057f20f883e', 'airson_yu@163.com', '19911112222', '2020-12-09 11:54:06', NULL, '1900-01-01 00:00:00',
+     * NULL, 0, 0, 100, 100, 5, 50, 1, 0, 0, 0, 1, 30, 0, 0, 0, 9, '{\"pstngw_no\":0,\"roipgw_no\":0,\"camera\":1}',
+     * NULL, 1, 1, 1, 2);
      */
     public static void rtv_corp() throws Exception {
         createFile("rtv_corp_table", 1000);
@@ -233,7 +249,7 @@ public class BigDataGenerator {
             String sql_10 = "(" + id + ", 'corp" + id + "', 'corpname" + id + "', '4297f44b13955235245b2497399d7a93', 'corp" + id + "@01more.com', '" + (phone++)
                     + "','2017-01-01 13:30:30', '2050-12-31 00:00:00', '2017-10-01 14:40:40', '182.160.45.01'";
             String sql_20 = ",1,1,100000,100000,100000,100000,1,1,1,0";
-            String sql_30 = ",1,30,0,0,0,5,'{\"camera\":1}'),";
+            String sql_30 = ",1,30,0,0,0,5,'{\"camera\":1}',NULL, 1, 1, 1, 2),";
             String sql = sql_10 + sql_20 + sql_30;
             if (id == 1000)
                 sql = sql.substring(0, sql.length() - 1);
@@ -252,6 +268,11 @@ public class BigDataGenerator {
 
     /**
      * 每个公司一条license
+     * INSERT INTO `rtvitrunk`.`rtv_system_param`(`id`, `system_name`, `email`, `phone`, `expired_date`, `max_user`, `max_group`, `max_console`, `max_user_group`, `status`,
+     * `gps_license`, `video_push_num`, `dc_license`, `sh_license`, `params`, `lc`, `hak`, `updatetime`)
+     * VALUES (1, '测试123_56_126_189', '12305@163.com', '18631477413', '2021-09-30 00:00:00', 200000, 20000, 500, 20000, 1, 1, 256, 0, 0,
+     * '{\"corpn\":5,\"mnc\":103,\"seller_name\":\"测试部门测试使用\",\"mcc\":460,\"camera_license\":1,\"dmr_license\":1,\"server_type\":\"MZ1K\",\"tech_provider\":\"成都零壹众科技有限公司\"}',
+     * 'SA24V4se6BLGiTJhQRFBVzAAP71LRtJ8wG++oIGuM1o0XhN286I1aJiydD5B491tseDVHjqgqQRtqfC1Y1VYSFBu2PBS4TQOIOkW8kRbZP3QuRhMFSupXtlWCVPeczhMrt0a9b4JB6wetNKz2r9dwLCu0YFTqy8BFkg8D6CtLdN7RfbK1/KIbJ1vdRbW79VrDTfuIeCGpJPq8xo1OE/R/uIIkSPJ7VlXCLpuc0c8Us8VWSkFlzwb4F9TnBIOWYyXa29pg5R9NxwLFpBpZMKS+c4joGEY4nK2LDNY974dkFkfjXSQXGlZ2kzDqjPLmNsOTXPlEk5trv/mhAP0n7Ms8wVT48pcTdm+5rCZ6YuyJTWxFdluF+sROOCi+z36WFvNUZA6WET/tOnkISQU7tMA4BQ35BhElRtpX07RbqJ9MylXJU7fue1AC7ePjZKh0XWMSX1J/vZ0GY/7OQcqzAVMIJ0seADdNWsV5NvpXsAyRjCprt9e4P0rR+YTlqTnChCNI4SKUl8niPu8+qSC3KkH481Y3kuwS4YSTx0q+ksSqgRSBsPTonbdQKvrs9CSkI7u9aS9CjdUWZaNlVlldmdVa1sB703yjsXGMF1wnxcoOvWqHHGBE/EF6rxxYHQrWMyIQ9sh9AqUKptDvNVJdTd0AN96xEOqtvVzWQsmLQ/vT11q8yuPUleyLs3WwpnIKsshTe5sqq1oDOqOa7YPxX2esldT4xxSNihJ2TjIIA6gaGuMP+6690fOSmG6ttE24/veL32sAqsKTtosLQxzLV0aEtBi/Ebd7lD7DR0AGB8+bicLY1s7Ysv89Z9KMXvs/qVxnVu7mBY6iIi1idVJkqvBLfS+pOZzwrVvZaRr8Qot6IV7RhYVWnyD9rvZVCIWv0I4WPEF5lSm0RIevoxNlg7BmeeAp+WED+94oQc155TaUjZBzd4dKh4M4XU+shD9g3KKEF3fuHrVPJfcQGCDLtEzrTofJsQyZJxBcKnB4HpHL3F3n+nV3lLhP3axsXqmb5Cn', '1', '2021-03-02 15:26:16');
      */
     public static void rtv_system_param() throws Exception {
         createFile("rtv_system_param", 1000);
@@ -260,8 +281,9 @@ public class BigDataGenerator {
         while (id <= 1000) {
             String sql_10 = "(" + id + ", 'corp" + id + "', 'corp" + id + "@163.com', '" + (phone++)
                     + "', '2050-12-31 00:00:00', '100000000', '100000000', '100000000', '100000000', '1', '1', '50000', '1', '1'";
-            String sql_20 = ",'{\"camera_license\":1,\"corpn\":" + id + ",\"dmr_license\":1,\"mcc\":460,\"mnc\":1,\"seller_name\":\"成都零壹众科技有限公司\",\"tech_provider\":\"成都零壹众科技有限公司\"}'),";
-            String sql = sql_10 + sql_20;
+            String sql_20 = ",'{\"camera_license\":1,\"corpn\":" + id + ",\"dmr_license\":1,\"mcc\":460,\"mnc\":1,\"seller_name\":\"成都零壹众科技有限公司\",\"tech_provider\":\"成都零壹众科技有限公司\"}'";
+            String sql_30 = ",'SA24V4se6BLGiTJhQRFBVzAAP71LRtJ8wG++oIGuM1o0XhN286I1aJiydD5B491tseDVHjqgqQRtqfC1Y1VYSFBu2PBS4TQOIOkW8kRbZP3QuRhMFSupXtlWCVPeczhMrt0a9b4JB6wetNKz2r9dwLCu0YFTqy8BFkg8D6CtLdN7RfbK1/KIbJ1vdRbW79VrDTfuIeCGpJPq8xo1OE/R/uIIkSPJ7VlXCLpuc0c8Us8VWSkFlzwb4F9TnBIOWYyXa29pg5R9NxwLFpBpZMKS+c4joGEY4nK2LDNY974dkFkfjXSQXGlZ2kzDqjPLmNsOTXPlEk5trv/mhAP0n7Ms8wVT48pcTdm+5rCZ6YuyJTWxFdluF+sROOCi+z36WFvNUZA6WET/tOnkISQU7tMA4BQ35BhElRtpX07RbqJ9MylXJU7fue1AC7ePjZKh0XWMSX1J/vZ0GY/7OQcqzAVMIJ0seADdNWsV5NvpXsAyRjCprt9e4P0rR+YTlqTnChCNI4SKUl8niPu8+qSC3KkH481Y3kuwS4YSTx0q+ksSqgRSBsPTonbdQKvrs9CSkI7u9aS9CjdUWZaNlVlldmdVa1sB703yjsXGMF1wnxcoOvWqHHGBE/EF6rxxYHQrWMyIQ9sh9AqUKptDvNVJdTd0AN96xEOqtvVzWQsmLQ/vT11q8yuPUleyLs3WwpnIKsshTe5sqq1oDOqOa7YPxX2esldT4xxSNihJ2TjIIA6gaGuMP+6690fOSmG6ttE24/veL32sAqsKTtosLQxzLV0aEtBi/Ebd7lD7DR0AGB8+bicLY1s7Ysv89Z9KMXvs/qVxnVu7mBY6iIi1idVJkqvBLfS+pOZzwrVvZaRr8Qot6IV7RhYVWnyD9rvZVCIWv0I4WPEF5lSm0RIevoxNlg7BmeeAp+WED+94oQc155TaUjZBzd4dKh4M4XU+shD9g3KKEF3fuHrVPJfcQGCDLtEzrTofJsQyZJxBcKnB4HpHL3F3n+nV3lLhP3axsXqmb5Cn', '1', '2021-03-02 15:26:16'),";
+            String sql = sql_10 + sql_20 + sql_30;
             if (id == 1000)
                 sql = sql.substring(0, sql.length() - 1);
             w1.append(sql);
@@ -276,6 +298,9 @@ public class BigDataGenerator {
 
     /**
      * 创建255个zone - 满zone - 实际使用数为 : {zone_count}
+     * INSERT INTO `rtvitrunk`.`rtv_3rdkey`(`id`, `api_key`, `security_key`, `corp_id`, `home`, `extjson`, `platform_name`, `platform_code`, `expire_time`, `ts_valid_minutes`,
+     * `state`, `auth_level`, `allow_apis`, `remark`, `update_time`)
+     * VALUES (35, 'CFEACEC79961AEB076658D8CB58E4016', 'B288F0D93A06AF708AC9E7A2359F93FCABC48507ABF1D97DBE65432AFF5456C3', 1, NULL, NULL, '信虹-大运会', 'xh_dyh', NULL, 0, 1, 1, NULL, NULL, '2021-02-09 11:30:17');
      */
     public static void rtv_3rdkey() throws Exception {
         createFile("rtv_3rdkey", 255);
@@ -444,12 +469,25 @@ public class BigDataGenerator {
             //NULL, 'online', 'c996f03e8c8f4c09', '6', '4', '0', '0', '65537', '1', 'u11',
             //'1', '1', '1', '0', '1', '30', '0', '1', '0', '0',
             //'', NULL, NULL);
+
+            // 字段更新 2021年03月11日10:05:00：
+            //INSERT INTO `rtv_tmp`.`rtv_user`(`id`, `display_name`, `user_password`, `client_version`, `device`, `img_url`, `phone`, `register_date`, `last_logon_date`, `last_access_date`,
+            // `last_logon_ip`, `logon_state`, `salt`, `ts_profile`, `ts_group`, `rank`, `admin_id`, `dcg_id`, `corp_id`, `logon_name`,
+            // `priority`, `status`, `preconfig`, `default_grp`, `gps_report`, `gps_interval`, `adm_ts`, `zone_id`, `ats`, `pts`,
+            // `imei`, `lmr_uid`, `ext_did`, `extension_property`,
+            // `code`, `unit_id`, `department_id`, `original_name`, `unit_fk_id`, `department_fk_id`, `iccid`, `logon_type`, `last_update_time`, `joinlinkage`, `role_id`, `nfc`, `ext`, `create_way`,
+            // `user_role_id`, `expire_date`, `abptype`, `hardware_bind_time`, `hardware_logo`, `current_name`, `con_visible_level`, `sign_in`, `sync_strategy`, `pinyin`, `pinyin_abbr`, `sms_enable`)
+            // VALUES (65542, '王青青', 'jl/dY7ubkhhqjIpM9eY7PQ==', NULL, 'portable', NULL, '', '2020-12-08 19:03:19', NULL, NULL, NULL, 'offline', 'ssss', 13, 1, 0, NULL, 65542, 1, 'wangqq', 3, 1, 1, 0, 1, 30, 0, 1, 0, 0,
+            // '860772037907741', 65542, '2c91facf75f3b6fc0175f5069969000e',NULL,
+            // NULL, '1', '110', '王青青', 1, 15, NULL, 0, '2020-12-10 11:00:21', 0, 31, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, NULL, 2, 1, 1, 'wangqingqing', 'wqq', 0);
+
             if (baseDataInsert) {
                 String sql_10 = "(" + userId + ",'" + dname + "','df',NULL,'portable',NULL,'" + (phone++) + "','2017-09-30 14:16:00','2017-09-30 14:16:00',NULL";
                 String sql_20 = ",NULL,'online','245956046a76a3a8',100,100," + rank + ",0," + userId + "," + corpId + ",'" + lname;
                 String sql_30 = "',1,1,1,0,1,30,0," + zoneId + ",0,0,";
-                String sql_40 = "'',NULL," + userId + ",'{\"oc\":" + (userId % 2) + "}'),";//oc:0,1
-                String sql = sql_10 + sql_20 + sql_30 + sql_40;
+                String sql_40 = "'',NULL," + userId + ",'{\"oc\":" + (userId % 2) + "}',";//oc:0,1
+                String sql_50 = "NULL, '1', '1', '" + dname + "', 1, 1, NULL, 0, '2021-03-11 10:10:21', 0, 1, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, NULL, 2, 1, 1, 'pinyin', 'py', 0),";//code - sms_enable
+                String sql = sql_10 + sql_20 + sql_30 + sql_40 + sql_50;
                 if (phone == (sm ? 13700200000l : 13702000000l)) {//XXX 通过手机号来判断是否为最后一个新增用户
                     sql = sql.substring(0, sql.length() - 1);
                     System.out.println("share zone corp id : " + corpId + ", phone : " + phone);
@@ -656,6 +694,11 @@ public class BigDataGenerator {
 
     /**
      * 用户组
+     * INSERT INTO `rtvitrunk`.`rtv_group`(`id`, `group_ts`, `owner_id`, `group_name`, `create_date`, `last_update_time`, `corp_id`, `rank`, `dcg`, `preconfig`, `status`, `zone_id`,
+     * `console_dtg`, `admin_id`, `ext_tgid`,
+     * `parent_type`, `parent_id`, `priority`, `timer`, `type`, `ext`, `plan_del_time`, `gw_flag`, `pinyin`, `pinyin_abbr`)
+     * VALUES (100254, 10, 0, '汉东省衢州监狱组织人事科', '2020-06-10 09:45:54', '2020-09-24 17:42:15', 1, 0, 0, 1, 1, 1, 0, NULL, '',
+     * 1, 2206, 3, NULL, 0, NULL, NULL,0, 'handongshengquzhoujianyuzuzhirenshike', 'hdsqzjyzzrsk');
      */
     public static void rtv_group() throws Exception {
         createFile("rtv_group", group_count);
@@ -669,13 +712,13 @@ public class BigDataGenerator {
             for (long userId : userList) {
                 gname = "groupbms" + userId;
                 long zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId);
-                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL),";
+                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
             }
             for (long userId : conAllList) {
                 gname = "groupcon" + userId;
                 long zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId);
-                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL),";
+                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
             }
         }
@@ -690,7 +733,7 @@ public class BigDataGenerator {
             for (long userId : conAllList) {
                 gname = "groupdtg" + userId;
                 long zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId);
-                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",1,NULL,NULL),";
+                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",1,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
                 id++;
             }
@@ -699,12 +742,12 @@ public class BigDataGenerator {
             for (long userId : userList) {
                 gname = "groupdcg" + userId;
                 long zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId);
-                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",0,NULL,NULL),";
+                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
                 id++;
             }
         }
-        String sql = "(0,1,1,'default', '2017-11-11 11:11:11',0,1,1,1,1,0,0,NULL,NULL)";//for : 去掉逗号
+        String sql = "(0,1,1,'default', '2017-11-11 11:11:11', '2021-03-28 14:04:32',0,1,1,1,1,0,0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py')";//for : 去掉逗号
         w1.append(sql);
         closeStream();
     }
@@ -740,6 +783,7 @@ public class BigDataGenerator {
 
     /**
      * 每个group最多65535个用户，每个公司的所有用户全部加入公司的前5个组
+     * INSERT INTO `rtvitrunk`.`rtv_user_group_map`(`id`, `group_id`, `user_id`, `group_right`, `nickname`, `user_role`) VALUES (1, 98306, 65537, 5, NULL, '0');
      */
     public static void rtv_user_group_map() throws Exception {
         createFile("rtv_user_group_map", user_count);
@@ -771,7 +815,7 @@ public class BigDataGenerator {
                 if (seq >= 5) {
                     seq = 0;
                 }
-                String sql = "(NULL," + groups.get(seq) + "," + userId + ",5),";
+                String sql = "(NULL," + groups.get(seq) + "," + userId + ",5, NULL, '0'),";
                 w1.append(sql);
                 seq++;
             }
@@ -780,18 +824,22 @@ public class BigDataGenerator {
                 if (seq >= 5) {
                     seq = 0;
                 }
-                String sql = "(NULL," + groups.get(seq) + "," + userId + ",5),";
+                String sql = "(NULL," + groups.get(seq) + "," + userId + ",5, NULL, '0'),";
                 w1.append(sql);
                 seq++;
             }
         }
-        String sql = "(0,0,0,0)";
+        String sql = "(0,0,0,0, NULL, '0')";
         w1.append(sql);
         closeStream();
     }
 
     /**
      * 每个公司50条
+     * INSERT INTO `rtvitrunk`.`rtv_console_user`(`id`, `user_name`, `password`, `salt`, `phone`, `corp_id`, `admin_id`,
+     * `display_name`, `department_id`, `department_fk_id`, `auth`, `ext_id`, `video_permission`, `audio_permission`, `photo_permission`, `device`)
+     * VALUES (1, 'xxt', 'dfeddeeadfe9', '98d9bc502630280c', '15500000001', 1, NULL,
+     * '', '3300000001', 1, 30, NULL, 1, 1, 1, '');
      */
     public static void rtv_console_user() throws Exception {
         createFile("rtv_console_user", corp_count * 50);
@@ -799,11 +847,11 @@ public class BigDataGenerator {
         for (long cacheCorp = 1; cacheCorp <= corp_count; cacheCorp++) {
             for (int i = 1; i <= 50; i++) {
                 long idx = (cacheCorp - 1) * 50 + i;
-                String sql = "(NULL,'cu" + idx + "','df','3c687a804bda8827','" + (phone++) + "'," + cacheCorp + ",NULL),";
+                String sql = "(NULL,'cu" + idx + "','df','3c687a804bda8827','" + (phone++) + "'," + cacheCorp + ",NULL, '', '1', 1, 30, NULL, 1, 1, 1, ''),";
                 w1.append(sql);
             }
         }
-        String sql = "(0,'default','df','3c687a804bda8827','1000000099',0,NULL)";//for : 去掉逗号
+        String sql = "(0,'default','df','3c687a804bda8827','1000000099',0,NULL, '', '1', 1, 30, NULL, 1, 1, 1, '')";//for : 去掉逗号
         w1.append(sql);
         //INSERT INTO `rtvitc`.`rtv_console_user` (`id`, `user_name`, `password`, `salt`, `phone`, `corp_id`, `admin_id`)
         //VALUES ('2', 'u2', 'df', '3c687a804bda8827', '19900094055', '1', NULL);
@@ -923,10 +971,16 @@ public class BigDataGenerator {
         //VALUES ('3', '1', '4', '测试围栏3', '1', '1', '{\"lat\":30,\"lon\":104,\"rad\":1234}', '[{\"lat\":30,\"lon\":104,\"rad\":1234},{\"lat\":30,\"lon\":104,\"rad\":1234}]', '69592', '1');
     }
 
+    /**
+     * INSERT INTO `rtvitrunk`.`rtv_version_map`(`id`, `server_version`, `client_os_type`, `client_version`, `client_url`, `latest_server`,
+     * `latest_client`, `client_description`, `force`, `branch`, `upload_time`, `old_forbid_dept_id`)
+     * VALUES (4, NULL, 'android', '8.2.1.8.LYX', 'http://123.56.126.189:80//zhddglt/app/LYJX_8.2.1.8.LYX_signed.apk', 0, 0, '测试升级', NULL, 'main', '2020-06-11 15:19:00', '');
+     * @throws Exception
+     */
     public static void rtv_version_map() throws Exception {
         createFile("rtv_version_map", user_count);
         for (long cacheCorp = 1; cacheCorp <= corp_count; cacheCorp++) {
-            String sql = "(NULL, NULL, 'console', '5.0." + cacheCorp + "', 'http://rtv.oss-cn-beijing.aliyuncs.com/APPLatestVersion%2FJJH.apk', '1', '1', NULL, '0', 'main', '2017-07-26 15:58:35'),";
+            String sql = "(NULL, NULL, 'console', '5.0." + cacheCorp + "', 'http://rtv.oss-cn-beijing.aliyuncs.com/APPLatestVersion%2FJJH.apk', '1', '1', NULL, '0', 'main', '2017-07-26 15:58:35', NULL),";
             if (cacheCorp == corp_count) {
                 sql = sql.substring(0, sql.length() - 1);
             }
