@@ -40,7 +40,7 @@ public class BigDataGenerator {
      */
     //private static final String	dbUrl		= windows ? "localhost" : "101.201.45.198";
     //private static final String dbname     = windows ? "zlab" : "rtvitrunk_test";
-    private static final String dbname     = windows ? "zlab" : "rtvitrunk";//rtv_tmp
+    private static final String dbname     = windows ? "zlab" : "rtvitrunk";//rtv_tmp rtvitrunk
     private static final String jdbc_user  = windows ? "root" : "root";
     //private static final String jdbc_pswd  = windows ? "root" : "Xyz@Itr132!";
     private static final String jdbc_pswd  = windows ? "root" : "vfr47ujm";
@@ -119,7 +119,8 @@ public class BigDataGenerator {
         rtv_system_param();
         //rtv_3rdkey();
         rtv_corp_zone_map();
-        rtv_user();
+        //rtv_user();
+        rtv_user2();
 
         //if (2 > 1)return;
 
@@ -207,13 +208,29 @@ public class BigDataGenerator {
         String sql;
         int id = 1;
         int uid_start_gap = 1000;//0;
+
+        boolean large_zone = true;
+        Integer MAX_ZONE_USER = large_zone ? 0x7FFF : 0x1FFF;
+        Integer MAX_ZONE_GROUP = large_zone ? 0x7FFF : 0xE000;
+        Integer GROUP_END_NO = large_zone ? 0xFFFF : 0xFFFF;
+        Integer RESERVE_USER = large_zone ? 400 : 100;
+        boolean IS_LARGE_ZONE = large_zone ? true : false;
+        Integer TG_MASK = large_zone ? 0x8000 : 0xE000;
+
         while (id <= 255) {
             ZoneIdAssign zone = new ZoneIdAssign();
-            zone.setMaxUid((long) ((id << 16) + 0x1FFF));
-            zone.setMaxTgid((long) ((id << 16) + 0xFFFF));
-            //zone.setCurUid((long) ((id << 16) + 1));
-            zone.setCurUid((long) ((id << 16) + 1) + uid_start_gap);
-            zone.setCurTgid((long) ((id << 16) + 0x2000));
+            if (!large_zone) {
+                zone.setMaxUid((long) ((id << 16) + 0x1FFF));
+                zone.setMaxTgid((long) ((id << 16) + 0xFFFF));
+                //zone.setCurUid((long) ((id << 16) + 1));
+                zone.setCurUid((long) ((id << 16) + 1) + uid_start_gap);
+                zone.setCurTgid((long) ((id << 16) + 0x2000));
+            } else {
+                zone.setMaxUid((long) (id << 16) + MAX_ZONE_USER);
+                zone.setMaxTgid((long) (id << 16) + GROUP_END_NO);
+                zone.setCurUid((long) (id << 16) + 0 + uid_start_gap);
+                zone.setCurTgid((long) (id << 16) + MAX_ZONE_USER + 1);
+            }
             zone.setName("zone" + id);
             zone.setNum(id);
             zone.setId(id);
@@ -403,12 +420,39 @@ public class BigDataGenerator {
         }
     }
 
+    public static void rtv_user2() throws Exception {
+        //新增rtv_user_admin时从缓存中读取userId相关数据
+        for (long cacheCorp = 1; cacheCorp <= corp_count; cacheCorp++) {
+            CorpUser cu = new CorpUser();
+            corp_user_map.put(cacheCorp, cu);
+        }
+
+        long total = user_count;
+        if (baseDataInsert) {
+            createFile("rtv_user", total);
+        }
+        long phone = 13700000000l;//XXX 通过手机号来判断是否为最后一个新增用户 phone == (sm ? 13700200000l : 13702000000l)
+        int zoneId = 1;
+
+        //1个公司有5个zone，每个zone3万人
+        for (int idx = 1; idx <= 5; idx++) {
+            ZoneIdAssign zone = zmap.get(zoneId);
+            phone = insertUserByTurn(phone, 1, zoneId, zone, false);
+            zoneId++;
+        }
+
+        if (baseDataInsert) {
+            closeStream();
+        }
+    }
+
     private static long insertUserByTurn(long phone, long corpId, long zoneId, ZoneIdAssign zone, boolean shareZone) throws Exception {
         String dname = null;
         String lname = null;
         int turnIdx = 1;
         //每个zone8000个用户
-        int total = shareZone ? 1600 : 8000;
+        //int total = shareZone ? 1600 : 8000;
+        int total = 30100;
         long userId = zone.getCurUid();
         long turnUserIdStart = userId;
         System.out.println("turnUserIdStart : " + turnUserIdStart + ", userId : " + userId + ", zoneId : " + zoneId);
@@ -488,7 +532,8 @@ public class BigDataGenerator {
                 String sql_40 = "'',NULL," + userId + ",'{\"oc\":" + (userId % 2) + "}',";//oc:0,1
                 String sql_50 = "NULL, '1', '1', '" + dname + "', 1, 1, NULL, 0, '2021-03-11 10:10:21', 0, 1, NULL, NULL, 1, NULL, NULL, 'sphone', NULL, NULL, NULL, 2, 1, 1, 'pinyin', 'py', 0),";//code - sms_enable
                 String sql = sql_10 + sql_20 + sql_30 + sql_40 + sql_50;
-                if (phone == (sm ? 13700200000l : 13702000000l)) {//XXX 通过手机号来判断是否为最后一个新增用户
+                //if (phone == (sm ? 13700200000l : 13702000000l)) {//XXX 通过手机号来判断是否为最后一个新增用户
+                if (userCount == total && zoneId == 5) {//XXX 通过手机号来判断是否为最后一个新增用户
                     sql = sql.substring(0, sql.length() - 1);
                     System.out.println("share zone corp id : " + corpId + ", phone : " + phone);
                 }
@@ -704,26 +749,38 @@ public class BigDataGenerator {
         createFile("rtv_group", group_count);
         String gname = null;
 
-        for (long cacheCorp = 1; cacheCorp <= corp_count; cacheCorp++) {
+        int tg_count = 1;
+
+        for (long cacheCorp = 1; cacheCorp <= 1; cacheCorp++) { // corp_count
             CorpUser cu = corp_user_map.get(cacheCorp);
             List<Long> userList = cu.getUserList();
             List<Long> conAllList = cu.getConAllList();//所有1-7阶
             //每个user一个group - userId 与 groupId一致
             for (long userId : userList) {
                 gname = "groupbms" + userId;
-                long zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId);
-                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
+                int zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId).intValue();
+                ZoneIdAssign zone = zmap.get(zoneId);
+                if (null == zone) continue;
+                long tgid = zone.getCurTgid() + tg_count;
+                tg_count++;
+                if (tgid >= 131071) continue;
+                String sql = "(" + tgid + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
             }
             for (long userId : conAllList) {
                 gname = "groupcon" + userId;
-                long zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId);
-                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
+                int zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId).intValue();
+                ZoneIdAssign zone = zmap.get(zoneId);
+                if (null == zone) continue;
+                long tgid = zone.getCurTgid() + tg_count;
+                if (tgid >= 131071) continue;
+                tg_count++;
+                String sql = "(" + tgid + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,0,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
             }
         }
 
-        int id = 30000001;
+        //int id = 30000001;
         for (long cacheCorp = 1; cacheCorp <= corp_count; cacheCorp++) {
             CorpUser cu = corp_user_map.get(cacheCorp);
             List<Long> userList = cu.getUserList();
@@ -732,19 +789,19 @@ public class BigDataGenerator {
             //console dtg group
             for (long userId : conAllList) {
                 gname = "groupdtg" + userId;
-                long zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId);
-                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",1,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
+                if (userId >= 131071) continue;
+                int zoneId = corp_user_map.get(cacheCorp).getConsoleZoneMap().get(userId).intValue();
+                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",1,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
-                id++;
             }
 
             //dcg group
             for (long userId : userList) {
                 gname = "groupdcg" + userId;
-                long zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId);
-                String sql = "(" + id + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
+                if (userId >= 131071) continue;
+                int zoneId = corp_user_map.get(cacheCorp).getUserZoneMap().get(userId).intValue();
+                String sql = "(" + userId + ",100," + userId + ",'" + gname + "', '2017-10-11 14:04:32', '2021-03-28 14:04:32', " + cacheCorp + ",1,1,1,1," + zoneId + ",0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py'),";
                 w1.append(sql);
-                id++;
             }
         }
         String sql = "(0,1,1,'default', '2017-11-11 11:11:11', '2021-03-28 14:04:32',0,1,1,1,1,0,0,NULL,NULL,1, 1, 3, NULL, 0, NULL, NULL,0, 'pinyin', 'py')";//for : 去掉逗号
@@ -794,6 +851,9 @@ public class BigDataGenerator {
             CorpUser cu = corp_user_map.get(cacheCorp);
             List<Long> userList = cu.getUserList();
             List<Long> conAllList = cu.getConAllList();//所有1-7阶
+            if (null == userList || userList.size() == 0) {
+                continue;
+            }
 
             //每个user一个group - userId 与 groupId一致
             long group1 = userList.get(0);
@@ -975,6 +1035,7 @@ public class BigDataGenerator {
      * INSERT INTO `rtvitrunk`.`rtv_version_map`(`id`, `server_version`, `client_os_type`, `client_version`, `client_url`, `latest_server`,
      * `latest_client`, `client_description`, `force`, `branch`, `upload_time`, `old_forbid_dept_id`)
      * VALUES (4, NULL, 'android', '8.2.1.8.LYX', 'http://123.56.126.189:80//zhddglt/app/LYJX_8.2.1.8.LYX_signed.apk', 0, 0, '测试升级', NULL, 'main', '2020-06-11 15:19:00', '');
+     *
      * @throws Exception
      */
     public static void rtv_version_map() throws Exception {
